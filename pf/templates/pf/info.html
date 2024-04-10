@@ -1,0 +1,9 @@
+{% extends 'pf/base.html' %}
+
+{% block content %}
+    <article>
+        <h2>{{ projeto.titulo }}</h2>
+        <time>{{ projeto.d0 }}</time>
+        <p>{{ projeto.texto|linebreaksbr }}</p>
+    </article>
+{% endblock %}

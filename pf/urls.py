@@ -18,4 +18,5 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('projeto/<int:pk>/', views.info, name='info'),
 ]

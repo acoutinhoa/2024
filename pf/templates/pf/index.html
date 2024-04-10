@@ -1,27 +1,11 @@
-{% load static %}
+{% extends 'pf/base.html' %}
 
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>4_</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-
-<body>
-
-    <header>
-        <h1><a href="/">4_</a></h1>
-    </header>
-
+{% block content %}
    {% for projeto in lista %}
         <article>
             <time>{{ projeto.d0 }}</time>
-            <h2><a href="">{{ projeto.titulo }}</a></h2>
+            <h2><a href="{% url 'info' pk=projeto.pk %}">{{ projeto.titulo }}</a></h2>
             <p>{{ projeto.texto|linebreaksbr }}</p>
         </article>
     {% endfor %}
-
-</body>
-
-</html>
+{% endblock %}
