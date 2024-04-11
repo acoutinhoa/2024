@@ -1,8 +1,15 @@
 {% extends 'pf/base.html' %}
-{% load static %}
 
 {% block content %}
     <article>
+        <aside class="actions">
+            {% if user.is_authenticated %}
+                <a class="btn btn-secondary" href="{% url 'edit' pk=projeto.pk %}">
+                  {% include './icons/fill.svg' %}
+                </a>
+            {% endif %}
+        </aside>
+
         <h2>{{ projeto.titulo }}</h2>
         <time>{{ projeto.d0 }}</time>
         <p>{{ projeto.texto|linebreaksbr }}</p>

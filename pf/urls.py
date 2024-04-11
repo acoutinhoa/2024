@@ -19,4 +19,6 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('projeto/<int:pk>/', views.info, name='info'),
+    path('projeto/add/', views.add, name='add'),
+    path('post/<int:pk>/edit/', views.edit, name='edit'),
 ]
