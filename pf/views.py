@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 
@@ -11,6 +12,7 @@ def info(request,pk):
     projeto = get_object_or_404(Projeto, pk=pk)
     return render(request, 'pf/info.html', {'projeto':projeto})
 
+@login_required
 def add(request):
     if request.method == "POST":
         form = ProjetoForm(request.POST)
@@ -23,6 +25,7 @@ def add(request):
         form = ProjetoForm()
     return render(request, 'pf/edit.html', {'form': form})
 
+@login_required
 def edit(request, pk):
     projeto = get_object_or_404(Projeto, pk=pk)
     if request.method == "POST":
