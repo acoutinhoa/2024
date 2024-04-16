@@ -16,6 +16,7 @@ Including another URLconf
 from django.urls import path
 from . import views
 
+# app_name = 'pf' # >>> referenciar como {% url 'pf:name' %}
 urlpatterns = [
     path('', views.index, name='index'),
     path('projeto/<int:pk>/', views.info, name='info'),
