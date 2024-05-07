@@ -19,3 +19,5 @@ db.sqlite3
 .fseventsd
 .Spotlight-V100
 
+# desenhos
+*.ai

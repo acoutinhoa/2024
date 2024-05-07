@@ -73,6 +73,8 @@ class Projeto(models.Model):
 	# proceso (prints?)
 	# etapas (tempo) # acho que isso vai ser uma coisa separada - talvez vinculado com o processo?
 	
+	# o que fazer quando o criador é deletado?
+	
 	def publicar(self):
 		self.visivel=True
 		self.save()

@@ -1,0 +1,45 @@
+{% extends 'links/base.html' %}
+
+{% block col1 %}
+<div class="tags" style="grid-row: span 2;">
+    <h1>tags <br/>
+    [links = {{ ps_list.count }}]<br/><br/></h1>
+    {% if tag %}
+        <h2>{{ tag }} <a href="{% url 'links:index' %}">X</a><br/><br/></h2>
+    {% endif %}
+
+    <ul>
+    {% for t in tag_list %}
+        <li>
+            <a href="{% url 'links:index-tag' tag=t %}">{{ t }}</a>[{{ t.ps_set.count }}]
+        </li>
+    {% endfor %}        
+    </ul>
+</div>
+{% endblock %}
+
+
+{% block col2 %}
+{% for l in ps_list %}
+    <a href="{% url 'links:index-link' pk=l.pk %}">
+    <img class="publico" src="{{ l.imagem.url }}" alt="{{ l.titulo }}">
+    </a>
+{% endfor %}
+{% endblock %}
+
+{% block col3 %}
+<img src="{{ ps.imagem.url }}" alt="{{ ps.titulo }}">
+<h1><br/>
+<a href="{{ ps.link }}" target="_blank">{{ ps.titulo }}</a>
+</h1>
+<h2 style="text-align: right;padding-left: 40%;"><br/>/ 
+{% for t in ps.tags.all %}
+    <a href="{% url 'links:index-tag' tag=t %}">{{ t }}</a> / 
+{% empty %}
+    nao tem tag?
+{% endfor %}
+<br/><br/></h2>
+<p>{{ ps.obs }}</p>
+
+{% endblock %}    
+

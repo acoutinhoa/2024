@@ -1,0 +1,107 @@
+/* 
+cores
+hsl(hue(degree in color wheel), saturation(%), lightness(%))  
+hsla(0-360, 0-100%, 0-100%, 0-1)  
+*/
+
+/* Always Design for Mobile First */
+/* @media */
+/*
+/* Extra small devices (phones, 600px and down)
+@media only screen and (max-width: 600px) {...}
+
+/* Small devices (portrait tablets and large phones, 600px and up)
+@media only screen and (min-width: 600px) {...}
+
+/* Medium devices (landscape tablets, 768px and up)
+@media only screen and (min-width: 768px) {...}
+
+/* Large devices (laptops/desktops, 992px and up)
+@media only screen and (min-width: 992px) {...}
+
+/* Extra large devices (large laptops and desktops, 1200px and up)
+@media only screen and (min-width: 1200px) {...} 
+*/
+
+/* nunca colocar espaço entre numero e unidade */
+
+* {
+    padding: 0;
+    margin: 0;
+    border: none;
+    font-family: 'Courier New';
+    box-sizing: border-box; /* allows us to include the padding and border in the box's total width (and height), making sure that the padding stays inside of the box and that it does not break */
+}
+
+body {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 19vw 13vw auto;
+    color: blue;
+}
+
+a:link, a:visited, a:active {
+    color: rgb(255, 0, 0); 
+    text-decoration: none;
+}
+a:hover {
+    color: magenta;
+    text-decoration: underline;
+}
+
+ul {
+    list-style-type: none;
+}
+
+img {
+    display: block;
+    width: 100%;
+}
+img.privado, img.privado:link {
+    border: solid 9px red;
+}
+img.publico, img.publico:link {
+    border: solid 9px blue;
+}
+img.privado:hover, img.publico:hover {
+    border-color: magenta;
+}
+
+#col1 {
+/*    overflow-x: hidden;*/
+    overflow: scroll;
+    display: grid;
+    grid-template-rows: auto auto auto;
+}
+
+#col2 {
+    overflow: scroll;
+/*    background-color: lightgoldenrodyellow;*/
+}
+
+#col3 {
+    overflow: scroll;
+/*    background-color: lightcyan;*/
+    padding: 15px;
+}
+
+.sistema {
+    width: 19vw;
+    background-color: blue;
+    color: white;
+    padding: 40px 20px;
+}
+.tags {
+/*    background-color: pink;*/
+    padding: 40px 20px 500px;
+    text-align: right;
+}
+/*li {
+    float: left;
+}
+*/
+
+
+

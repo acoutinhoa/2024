@@ -1,11 +1,40 @@
+/* seletor geral */
+* {
+    box-sizing: border-box; /* allows us to include the padding and border in the box's total width (and height), making sure that the padding stays inside of the box and that it does not break */
+}
+
+/* 
+cores
+hsl(hue(degree in color wheel), saturation(%), lightness(%))  
+hsla(0-360, 0-100%, 0-100%, 0-1)  
+*/
+
+/* Always Design for Mobile First */
+/* @media */
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {...}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {...}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {...}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {...}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {...} 
+
 
 body {
-    padding-left: 40px;
+    padding-left: 40px; /* nunca colocar espaço entre numero e unidade */
     font-family: 'Arial';
 }
 
 a:link, a:visited, a:active {
-    color: blue;
+    color: rgb(255, 0, 0); 
 }
 a:hover {
     color: magenta;
