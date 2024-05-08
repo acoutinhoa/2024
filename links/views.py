@@ -3,24 +3,32 @@ from .models import *
 
 def index(request,tag=None,pk=None):
 	ps_list=Ps.objects.filter(visivel=True)
+
 	if tag:
-		try:
-			tag=Tg.objects.get(tag=tag)
-			tag_list=Tg.objects.exclude(pk=tag.pk)
-			ps_list=ps_list.filter(tags=tag)
-		except:
-			return redirect('links:index')
-	else:
-		tag_list=Tg.objects.all()
-	
+		tags=tag.split('+')
+		tag=[]
+		for t in tags:
+			try:
+				t=Tg.objects.get(tag=t)
+				tag.append(t)
+				ps_list=ps_list.filter(tags=t)
+			except:
+				return redirect('links:index')
+
 	if pk:
 		try:
 			ps=ps_list.get(pk=pk)
 		except:
 			return redirect('links:index')
-	else:
+	elif ps_list:
 		ps=ps_list[0]
+	else:
+		ps=None
 
+	tag_list=Tg.objects.filter(ps__in=ps_list)
+	if tag:
+		for t in tag:
+			tag_list=tag_list.exclude(tag=t)
 
 	return render(request, 'links/index.html', {
 		'tag':tag, 
