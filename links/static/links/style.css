@@ -38,7 +38,7 @@ body {
     width: 100vw;
     height: 100vh;
     display: grid;
-    grid-template-columns: 19vw 13vw auto;
+    grid-template-columns: auto auto auto;
     color: blue;
 }
 
@@ -55,6 +55,11 @@ ul {
     list-style-type: none;
 }
 
+/*li {
+    float: left;
+}
+*/
+
 img {
     display: block;
     width: 100%;
@@ -68,15 +73,20 @@ img.publico, img.publico:link {
 img.privado:hover, img.publico:hover {
     border-color: magenta;
 }
+img.print {
+    border-width:13px;
+}
 
 #col1 {
 /*    overflow-x: hidden;*/
+    width: 19vw;
     overflow: scroll;
     display: grid;
     grid-template-rows: auto auto auto;
 }
 
 #col2 {
+    width: 19vw;
     overflow: scroll;
 /*    background-color: lightgoldenrodyellow;*/
 }
@@ -84,7 +94,6 @@ img.privado:hover, img.publico:hover {
 #col3 {
     overflow: scroll;
 /*    background-color: lightcyan;*/
-    padding: 15px 15px 100px;
 }
 
 .sistema {
@@ -93,15 +102,17 @@ img.privado:hover, img.publico:hover {
     color: white;
     padding: 40px 20px;
 }
+
 .tags {
 /*    background-color: pink;*/
     padding: 40px 20px 500px;
     text-align: right;
 }
-/*li {
-    float: left;
+
+.info {
+    padding: 19px 38px 100px;
 }
-*/
+
 
 
 

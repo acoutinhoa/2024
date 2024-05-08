@@ -1,5 +1,5 @@
 {% extends 'links/base.html' %}
-{% load novas_tags %}
+{% load my_tags %}
 
 {% block col1 %}
 <!-- tags -->
@@ -34,7 +34,11 @@
 {% block col2 %}
 <!-- lista com todos os prints -->
 {% for l in ps_list %}
-    <a href="{% url 'links:index-link' pk=l.pk %}">
+    {% if tag %}
+        <a href="{% url 'links:index-tag-link' pk=l.pk tag=tag|linktags %}">
+    {% else %}
+        <a href="{% url 'links:index-link' pk=l.pk %}">
+    {% endif %}
     <img class="publico" src="{{ l.imagem.url }}" alt="{{ l.titulo }}">
     </a>
 {% endfor %}
@@ -43,33 +47,47 @@
 
 
 {% block col3 %}
+
 {% if ps %}
+
+{% if ps.ativo %}
+    {% set ps.link as link %}
+{% elif ps.link2 %}
+    {% set ps.link2 as link %}
+{% endif %}
+
     <!-- imagem -->
-    <img src="{{ ps.imagem.url }}" alt="{{ ps.titulo }}">
-    <!-- link/titulo -->
-    <p><br></p>
-    <h1>
-    {% if ps.ativo %}
-        <a href="{{ ps.link }}" target="_blank">{{ ps.titulo }}</a>
-    {% elif ps.link2 %}
-        <a href="{{ ps.link2 }}" target="_blank">{{ ps.titulo }}</a>
-        <span style="font-size:10px;"> >>> internet archive<br></span>
-    {% else %}
-        {{ ps.titulo }}
-    {% endif %}
-    </h1>
-    <small>
-    {% if not ps.ativo %}
-        <b>link original:</b> {{ ps.link }}<br>
-    {% endif %}
-    </small>
-    <!-- tags -->
-    <h2 style="text-align: right;padding-left: 40%;">/ 
-    {% for t in ps.tags.all %}
-        <a href="{% url 'links:index-tag' tag=t %}">{{ t }}</a> / 
-    {% endfor %}</h2>
-    <!-- texto -->
-    <p><br>{{ ps.obs }}</p>
+    <a href="{{ link }}" target="_blank">
+    <img src="{{ ps.imagem.url }}" alt="{{ ps.titulo }}" class="print publico">
+    </a>
+
+    <div class="info">
+        <!-- link/titulo -->
+        <h1>
+        {% if link %}
+            <a href="{{ link }}" target="_blank">{{ ps.titulo }}</a>
+        {% else %}
+            {{ ps.titulo }}
+        {% endif %}
+
+        {% if ps.link2 %}
+            <span style="font-size:10px;"> >>> internet archive<br></span>
+        {% endif %}
+
+        </h1>
+        <small>
+        {% if not ps.ativo %}
+            <b>link original:</b> {{ ps.link }}<br>
+        {% endif %}
+        </small>
+        <!-- tags -->
+        <h2 style="text-align: right;padding-left: 40%;">/ 
+        {% for t in ps.tags.all %}
+            <a href="{% url 'links:index-tag' tag=t %}">{{ t }}</a> / 
+        {% endfor %}</h2>
+        <!-- texto -->
+        <p style="padding-right: 20%"><br>{{ ps.obs }}</p>
+    </div>
 {% endif %}
 {% endblock %}    
 

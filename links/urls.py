@@ -13,6 +13,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('<int:pk>/', views.index, name='index-link'),
     path('<str:tag>/', views.index, name='index-tag'),
+    path('<str:tag>/<int:pk>/', views.index, name='index-tag-link'),
     # user
     path('<str:nome>/', include(user_patterns)),
 

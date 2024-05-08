@@ -25,8 +25,8 @@ class Ps(models.Model):
 	# varias imagens ?
 	imagem = models.ImageField(upload_to=print_filepath, max_length=100,)
 	visivel = models.BooleanField(default=True) # publico/privado
-	titulo = models.CharField(max_length=400,blank=True,help_text='se em branco, um titulo vai ser gerado a partir do link')
-	link = models.URLField(max_length=400)
+	titulo = models.CharField(max_length=400,blank=True,help_text='se em branco, o titulo será gerado a partir do link')
+	link = models.URLField(max_length=400, blank=True, help_text='se em branco, o link será gerado a partir do nome da imagem')
 	ativo = models.BooleanField(default=True) # se o link ainda existe
 	link2 = models.URLField(max_length=400,blank=True,help_text='link do internet archive, caso o link não exista mais') # link backup
 	tags = models.ManyToManyField(Tg)
@@ -39,8 +39,24 @@ class Ps(models.Model):
 		ordering = ['?']
 
 	def save(self, *args, **kwargs):
+		# link
+		if not self.link:
+			nome=self.imagem.name
+			nome=nome.split('.')
+			nome='.'.join(nome[:-1])
+			if ':' in nome:
+				nome=nome.replace(':','/')
+			if nome[:4]!='http':
+				nome='http://'+nome
+			self.link = nome
 		# titulo
 		if not self.titulo:
-			self.titulo=self.link.split('/')[2]
+			path=self.link
+			if path[:4]=='http':
+				path=path.split('/')[2]
+			else:
+				path=path.split('.')[0]
+			self.titulo=path
+
 		super().save(*args, **kwargs)
 

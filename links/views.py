@@ -25,7 +25,7 @@ def index(request,tag=None,pk=None):
 	else:
 		ps=None
 
-	tag_list=Tg.objects.filter(ps__in=ps_list)
+	tag_list=Tg.objects.filter(ps__in=ps_list).distinct()
 	if tag:
 		for t in tag:
 			tag_list=tag_list.exclude(tag=t)
