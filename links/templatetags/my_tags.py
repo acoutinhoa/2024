@@ -5,9 +5,7 @@ register = template.Library()
 @register.filter()
 def linktags(value):
 	'''soma tags pra url'''
-	lista=[]
-	for i in value:
-		lista.append(i.tag)
+	lista=[i for i in value]
 	return '+'.join(lista)
 
 @register.filter()

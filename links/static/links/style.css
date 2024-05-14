@@ -25,92 +25,244 @@ hsla(0-360, 0-100%, 0-100%, 0-1)
 
 /* nunca colocar espaço entre numero e unidade */
 
+
+/*geral*/
 * {
     padding: 0;
     margin: 0;
     border: none;
-    font-family: 'Courier New';
     box-sizing: border-box; /* allows us to include the padding and border in the box's total width (and height), making sure that the padding stays inside of the box and that it does not break */
+    font-family: 'Courier New';
 }
-
 body {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    display: grid;
-    grid-template-columns: auto auto auto;
-    color: blue;
+    color: blue;    
+}
+iframe {
+    width: 100%;
+    height: 100%;
+}
+/*depois do float*/
+.clearfix::after { 
+  content: "";
+  clear: both;
+  display: table;
 }
 
-a:link, a:visited, a:active {
-    color: rgb(255, 0, 0); 
+
+/*links*/
+a.txt, a.txt:link {
+    color: red; 
     text-decoration: none;
 }
-a:hover {
-    color: magenta;
-    text-decoration: underline;
+a.txt:hover {
+    border-bottom: solid 0.1em magenta;
 }
 
-ul {
-    list-style-type: none;
+
+/*textos*/
+h1 {font-size: 1.9em;}
+h2 {font-size: 1.3em;}
+p {font-size: 0.9em;}
+.textinho {
+    font-size: 12px;
+    padding-top: 3px;
 }
 
+
+/*lista*/
+ul {list-style-type: none;}
 /*li {
-    float: left;
+    font-size: 0.9em;
+    padding: 0 0 5px 5px;
 }
 */
 
+
+/*imagens*/
 img {
     display: block;
     width: 100%;
 }
-img.privado, img.privado:link {
-    border: solid 9px red;
-}
-img.publico, img.publico:link {
+
+.lista, .lista:link {
     border: solid 9px blue;
 }
-img.privado:hover, img.publico:hover {
+.print {
+    border: solid 13px blue;
+}
+.lista:hover, .print:hover {
+    border-color: magenta magenta red red;
+}
+.privado, .privado:link {
+    border-color: red;
+}
+.privado:hover {
     border-color: magenta;
 }
-img.print {
-    border-width:13px;
+
+
+/*form*/
+form {
+    padding: 50px;
+    background-color: blue;
+    color: white;
+    font-size: 14px;
+}
+form p {
+    padding-top: 10px;
+}
+input, textarea {
+    width: 100%;
+    display: block;
+    margin-top: 9px;
+    margin-bottom: 5px;
+    border: solid 2px transparent;
+    padding: 8px 10px 5px;
+    background-color: white;
+    color: blue;
+    font-size: 14px;
+}
+input[type=checkbox] {
+    display: inline-block;
+    width: auto;
+    padding-right: 9px;
+}
+input:focus, textarea:focus {
+    border-color: magenta;
+}
+label {
+    width: 100%;
+    padding-left: 10px;
+/*    display: block;*/
+    margin-top: 13px;
+}
+/*input[type=button], input[type=submit], input[type=reset], */
+button {
+  background-color: white;
+  border: solid 2px blue;
+  color: blue;
+  padding: 5px 10px;
+  text-decoration: none;
+  margin: 19px 2px;
+  cursor: pointer;
+}
+/*.form_tags {
+    display: inline-block;
+    float: left;
+}
+*/
+
+/*botoes*/
+.bt0, .bt1, .bt2 {
+    display: inline-block;
+    border-style: solid;
+    border-width: 2px;
+    font-size: 0.9em;
+    padding: 4px 9px;
+    width: auto;
+}
+.bt0 {
+    border-color: transparent;
+    background-color: white;
+    color: blue;
+}
+.bt1 {
+    border-color: white;
+    background-color: blue;
+    color: white;
+}
+.bt2 {
+    border-color: blue;
+    background-color: white;
+    color: blue;
+}
+.bt1:hover, .bt2:hover {
+/*    border-bottom-color: magenta;*/
+    border-color: magenta;
+    background-color: red;
+    color: blue;
 }
 
-#col1 {
-/*    overflow-x: hidden;*/
-    width: 19vw;
-    overflow: scroll;
+
+/*colunas*/
+.colunas {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
     display: grid;
-    grid-template-rows: auto auto auto;
+    grid-template-columns: 19vw 19vw auto;
+}
+.col1, .col2, .col3 {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.col1 {
+}
+.col2 {
+}
+.col3 {
 }
 
-#col2 {
-    width: 19vw;
-    overflow: scroll;
-/*    background-color: lightgoldenrodyellow;*/
-}
 
-#col3 {
-    overflow: scroll;
-/*    background-color: lightcyan;*/
-}
-
-.sistema {
+/*geral*/
+.geral {
     width: 19vw;
     background-color: blue;
     color: white;
-    padding: 40px 20px;
+    padding: 38px 19px;
+}
+.geral-user {
+    margin-top: 29px;
+}
+.geral-add {
+    margin-top: 19px;
 }
 
+/*perfil*/
+.perfil {
+    border: solid 2px blue;
+    padding: 19px;
+}
+
+/*menu*/
+.menu {
+    display: flex;
+    width: 100%;
+}
+.btm {
+    width: 100%;
+    text-align: center;
+    font-size: 1em;
+}
+
+/*tags*/
 .tags {
-/*    background-color: pink;*/
-    padding: 40px 20px 500px;
+    width: 100%;
+    padding: 19px;
     text-align: right;
 }
+.tags h2 {
+    padding-bottom: 25px;
+}
 
+
+/*lista de imagens*/
+.edit {
+    position: absolute; 
+    top:0; 
+    left: 0; 
+    display: flex; 
+    flex-direction: column; 
+}
+
+
+/*info*/
 .info {
     padding: 19px 38px 100px;
+}
+.info h2{
+    text-align: right;
+    padding: 20px 0 0px 40%;
 }
 
 

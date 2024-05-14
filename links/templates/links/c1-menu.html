@@ -1,0 +1,43 @@
+<!-- menu -->
+<div class="menu">
+    {% spaceless %}
+    {% if nome %}
+        {% if u_list %}
+            <div class="bt0 btm">amigos</div>
+        {% else %}
+            <a href="">
+                <div class="bt2 btm">amigos</div>
+            </a>
+        {% endif %}
+        {% if s2_list %}
+            <div class="bt0 btm">favs</div>
+        {% else %}
+            <a href="">
+                <div class="bt2 btm">favs</div>
+            </a>
+        {% endif %}
+        {% if tag_list %}
+            <div class="bt0 btm">tags</div>
+        {% else %}
+            <a href="">
+                <div class="bt2 btm">tags</div>
+            </a>
+        {% endif %}
+    {% else %}
+        {% if u_list %}
+            <div class="bt0 btm">pessoas</div>
+        {% else %}
+            <a href="">
+                <div class="bt2 btm">pessoas</div>
+            </a>
+        {% endif %}
+        {% if tag_list %}
+            <div class="bt0 btm">tags</div>
+        {% else %}
+            <a href="">
+                <div class="bt2 btm">tags</div>
+            </a>
+        {% endif %}
+    {% endif %}
+    {% endspaceless %}
+</div>

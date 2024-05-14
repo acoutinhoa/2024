@@ -1,0 +1,50 @@
+{% load my_tags %}
+
+<!-- define link principal -->
+{% if ps.ativo %}
+    {% set ps.link as link %}
+{% elif ps.link2 %}
+    {% set ps.link2 as link %}
+{% endif %}
+
+<!-- imagem -->
+<a href="{{ link }}" target="_blank">
+    <img src="{{ ps.imagem.url }}" alt="{{ ps.titulo }}" class="print {% if not ps.visivel %}privado{% endif %}">
+</a>
+
+<div class="info">
+    <!-- link:titulo -->
+    <h1>
+        {% if link %}
+            <a class="txt" href="{{ link }}" target="_blank">{{ ps.titulo }}</a>
+        {% else %}
+            {{ ps.titulo }}
+        {% endif %}
+
+        {% if ps.link2 %}
+            <span class="textinho">[internet archive]</span>
+        {% endif %}
+    </h1>
+
+    <!-- link:texto -->
+    <p class="textinho">
+        <b>>>></b> {{ ps.link }}<br>
+    </p>
+
+    <!-- tags -->
+    <h2 class="info-tag">/ 
+        {% for t in ps.tags.all %}
+            <!-- define o link da tag -->
+            {% if nome %}
+                {% url 'links:perfil-tag' tag=t nome=nome as link_tag %}
+            {% else %}
+                {% url 'links:index-tag' tag=t as link_tag %}
+            {% endif %}
+            <a class="txt" href="{{ link_tag }}" target="_top">{{ t }}</a> / 
+        {% endfor %}
+    </h2>
+
+    <!-- texto -->
+    <p style="padding-right: 20%"><br>{{ ps.obs|linebreaksbr }}</p>
+</div>
+

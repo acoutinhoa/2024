@@ -1,46 +1,37 @@
-{% load static my_tags %}
+{% load static %}
 
 <!DOCTYPE html>
 <html>
 
+<!-- head -->
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,  initial-scale=1.0">
-
-<title>4_/links</title>
-<link rel="stylesheet" href="{% static 'links/style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,  initial-scale=1.0">
+    <title>4_/links</title>
+    <link rel="stylesheet" href="{% static 'links/style.css' %}">
 </head>
 
-<body>
-<div id="col1">
-    <div class="sistema">
-    <h1><a href="{% url 'links:index' %}">links/ printscreen</a><br/></h1>
-    <br>
-    {% if user.is_authenticated %}
-        <p>>>>
-            {{ user.username }} [<a href="{% url 'logout' %}?next={{request.path}}">logout</a>]</p>
-        {% comment %}
-        <a href="{% url 'add' %}" class="top-menu">+</a>
-        {% endcomment %}
-    {% else %}
-        <a href="{% url 'login' %}?next={{request.path}}">login</a>
-    {% endif %}
+<!-- body -->
+<body class="colunas">
+    <div class="col1">
+        <!-- info geral + sistema -->
+        {% include 'links/c1-geral.html' %}
+        <!-- bloco col1 -->
+        {% block col1 %}
+        {% endblock %}
     </div>
 
-    {% block col1 %}
-    {% endblock %}
-</div>
+    <div class="col2">
+        <!-- bloco col2 -->
+        {% block col2 %}
+        {% endblock %}
+    </div>
 
-<div id="col2">
-    {% block col2 %}
-    {% endblock %}
-</div>
-
-<div id="col3">
-    {% block col3 %}
-    {% endblock %}    
-</div>
-
+    <div class="col3">
+        <!-- bloco col3 -->
+        {% block col3 %}
+        {% endblock %}    
+    </div>
 </body>
 
 </html>

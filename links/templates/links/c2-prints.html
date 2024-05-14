@@ -1,0 +1,42 @@
+{% load my_tags %}
+
+{% for l in ps_list %}
+    {% if perfil %}
+        {% url 'links:ps-info' nome=nome pk=l.pk as link %}
+    {% else %}
+        {% url 'links:ps-info' pk=l.pk as link %}
+    {% endif %}
+    <div style="position:relative;" id='{{ l.pk }}'>
+        <a href="{{ link }}" target='col3'>
+            <img class="lista {% if not l.visivel %}privado{% endif %}" src="{{ l.imagem.url }}" alt="{{ l.titulo }}">
+        </a>
+        {% if owner %}
+            <!-- botoes de edicao -->
+            <div class="edit">
+                <a href="{% url 'links:ps-delete' pk=l.pk %}">
+                    <div class="bt1">delete</div>
+                </a>
+                <a href="{% url 'links:ps-edit' pk=l.pk nome=nome %}" target='col3'>
+                    <div class="bt1">edit</div>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- botoes -->
+{% endfor %}
+
+
+{% comment %}
+<!-- links antes de setar o iframe -->
+<!-- a pagina de tags+links nao é mais necessaria: REVER!  -->
+<div id='{{ l.pk }}'>
+    {% if tag %}
+        <a href="{% url 'links:index-tag-link' pk=l.pk tag=tag|linktags %}#{{ l.pk }}">
+    {% else %}
+        <a href="{% url 'links:index-link' pk=l.pk %}#{{ l.pk }}">
+    {% endif %}
+        <img class="{{ tipo }}" src="{{ l.imagem.url }}" alt="{{ l.titulo }}">
+        </a>
+</div>
+{% endcomment %}

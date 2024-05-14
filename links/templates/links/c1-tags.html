@@ -1,0 +1,78 @@
+{% load my_tags %}
+
+<!-- tags -->
+<div class="tags">
+    <h2>[links={{ ps_list.count }}]</h2>
+
+    <!-- lista tags -->
+    {% spaceless %}
+    {% for t in tag_list %}
+        {% if t in tag_set %}
+            <!-- define link -->
+            {% if nome %}
+                {% if tag_set|length > 1 %}
+                    {% url 'links:perfil-tag' nome=nome tag=t|linktagsremove:tag_set as link %}
+                {% else %}
+                    {% url 'links:perfil' nome=nome as link %}
+                {% endif %}
+            {% else %}
+                {% if tag_set|length > 1 %}
+                    {% url 'links:index-tag' tag=t|linktagsremove:tag_set as link %}
+                {% else %}
+                    {% url 'links:index' as link %}
+                {% endif %}
+            {% endif %}
+            <a href={{link}}><div class="bt1">{{ t }} [X]</div></a>
+        {% else %}
+            <!-- define link -->
+            {% if perfil %}
+                {% url 'links:perfil-tag' tag=t|linktagsadd:tag_set nome=nome as link %}
+            {% else %}
+                {% url 'links:index-tag' tag=t|linktagsadd:tag_set as link %}
+            {% endif %}
+            <a href="{{link}}"><div class="bt2">{{ t }}</div></a>
+       {% endif %}
+    {% endfor %}        
+    {% endspaceless %}
+
+</div>
+
+
+
+
+{% comment %}
+<div class="tags">
+    <h2 class="tag">[links={{ ps_list.count }}]</h2>
+
+    <!-- tags selecionadas -->
+    {% if tag_set %}
+        <h2 class="tag">
+            <ul>
+            {% for t in tag_set %}
+                <li>
+                {{ t }} 
+                {% if tag_set|length > 1 %}
+                    <a href="{% url 'links:index-tag' tag=t|linktagsremove:tag_set %}">
+                {% else %}
+                    <a href="{% url 'links:index' %}">
+                {% endif %}
+                X</a>
+                </li>
+            {% endfor %}
+            </ul>
+        </h2>
+    {% endif %}
+
+    <!-- lista tags -->
+    <ul>
+    {% for t in tag_list %}
+        <li class="tag">
+        <a href="{% url 'links:index-tag' tag=t|linktagsadd:tag_set %}">{{ t }}</a>[{{ t.ps_set.count }}]
+        </li>
+    {% endfor %}        
+    </ul>
+
+</div>
+{% endcomment %}
+
+

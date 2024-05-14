@@ -25,18 +25,23 @@ class Ps(models.Model):
 	# varias imagens ?
 	imagem = models.ImageField(upload_to=print_filepath, max_length=100,)
 	visivel = models.BooleanField(default=True) # publico/privado
-	titulo = models.CharField(max_length=400,blank=True,help_text='se em branco, o titulo será gerado a partir do link')
-	link = models.URLField(max_length=400, blank=True, help_text='se em branco, o link será gerado a partir do nome da imagem')
-	ativo = models.BooleanField(default=True) # se o link ainda existe
-	link2 = models.URLField(max_length=400,blank=True,help_text='link do internet archive, caso o link não exista mais') # link backup
+	titulo = models.CharField(max_length=400,blank=True,)
+	link = models.URLField(max_length=400, blank=True,)
+	ativo = models.BooleanField(default=True,verbose_name='link original ativo') # se o link ainda está ativo
+	link2 = models.URLField( # link backup
+		max_length=400,
+		blank=True,
+		verbose_name='internet archive',
+		help_text='link do <a class="txt" href="https://web.archive.org/">internet archive</a> se o link original estiver indisponível'
+	)
 	tags = models.ManyToManyField(Tg)
-	obs = models.TextField(blank=True)
+	obs = models.TextField(blank=True,verbose_name='detail',)
 	
 	def __str__(self):
 		return self.titulo
 
 	class Meta:
-		ordering = ['?']
+		ordering = ['-u0']
 
 	def save(self, *args, **kwargs):
 		# link
