@@ -24,7 +24,11 @@
     <!-- detalhes do link -->
     {% if pk %}
         {% if perfil %}
-            {% url 'links:ps-info' nome=perfil.username pk=pk as link %}
+            {% if edit %} 
+                {% url 'links:ps-edit' nome=perfil.username pk=pk as link %}
+            {% else %}
+                {% url 'links:ps-info' nome=perfil.username pk=pk as link %}
+            {% endif %}
         {% else %}
             {% url 'links:ps-info' pk=pk as link %}
         {% endif %}

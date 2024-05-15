@@ -6,14 +6,26 @@ from django.contrib.auth.models import User
 from .models import *
 from .forms import *
 
-def index(request,nome=None, tag=None,pk=None):
+def index(request,nome=None,tag=None,pk=None,edit=False,favs=False,amigos=False,pessoas=False):
 	# pessoas
 	perfil=None
 	owner=False
+	form=None
+	
 	if nome:
 		perfil=get_object_or_404(User, username=nome)
 		if request.user==perfil:
 			owner=True
+			if request.method == "POST":
+				form = PsAddForm(request.POST, request.FILES)
+				if form.is_valid():
+					ps = form.save(commit=False)
+					ps.u0 = request.user
+					ps.save()
+					# form.save_m2m() # pra salvar o many2many field
+					return redirect('links:perfil-edit', pk=ps.pk, nome=nome,)
+			else:
+				form = PsAddForm()
 
 	# lista total de links
 	if nome:
@@ -23,22 +35,24 @@ def index(request,nome=None, tag=None,pk=None):
 	else:
 		ps_list=Ps.objects.filter(visivel=True)
 
-	# filtro e lista de tags
-	tag_set=[]
-	if tag:
-		for t in tag.split('+'):
-			try:
-				t=Tg.objects.get(tag=t)
-				tag_set.append(t)
-				ps_list=ps_list.filter(tags=t) # filtra a lista de links
-			except: # se tiver uma tag zuada
-				if nome:
-					return redirect('links:perfil', nome=nome) 
-				else:
-					return redirect('links:index') 
-
-	# cria a lista de tags a partir da lista de links que já foi filtrada
-	tag_list=Tg.objects.filter(ps__in=ps_list).distinct().order_by(Lower('tag'))
+	if pessoas:
+		pass
+	else:
+		# filtro e lista de tags
+		tag_set=[]
+		if tag:
+			for t in tag.split('+'):
+				try:
+					t=Tg.objects.get(tag=t)
+					tag_set.append(t)
+					ps_list=ps_list.filter(tags=t) # filtra a lista de links
+				except: # se tiver uma tag zuada
+					if nome:
+						return redirect('links:perfil', nome=nome) 
+					else:
+						return redirect('links:index') 
+		# cria a lista de tags a partir da lista de links que já foi filtrada
+		tag_list=Tg.objects.filter(ps__in=ps_list).distinct().order_by(Lower('tag'))
 
 	# randomiza um link	
 	if not pk and ps_list:
@@ -55,14 +69,26 @@ def index(request,nome=None, tag=None,pk=None):
 		'pk':pk,
 		'nome':nome,
 		'owner':owner,
+		'form':form,
+		'edit':edit,
 	})
 
+@login_required
+def ps_delete(request, pk):
+	ps = get_object_or_404(Ps, pk=pk)
+	# verifica se o user é o dono do link antes de deletar
+	if request.user == ps.u0:
+		ps.delete()
+	return redirect(request.META.get('HTTP_REFERER'))
+
 @xframe_options_exempt
-def ps_info(request, pk, nome=None):
-	ps=get_object_or_404(Ps, pk=pk)
-	owner=False
-	if request.user==ps.u0:
-		owner=True
+def ps_info(request, pk, nome=None, owner=False):
+	try:
+		ps=Ps.objects.get(pk=pk)
+		if request.user==ps.u0:
+			owner=True
+	except:
+		ps=None
 	return render(request, 'links/link-info.html', {
 		'ps':ps, 
 		'nome':nome,
@@ -81,33 +107,17 @@ def ps_edit(request, pk, nome):
 				return redirect('links:ps-info', pk=pk, nome=nome)
 		else:
 			form = PsForm(instance=ps)
-	return render(request, 'links/link_edit.html', {'form': form,})
+	return render(request, 'links/link_edit.html', {'form': form,'ps':ps})
 
 @login_required
-def ps_add(request):
-	ps_list=Ps.objects.filter(u0=request.user).order_by('-d0')
-
-	if request.method == "POST":
-		form = PsForm(request.POST, request.FILES)
-		if form.is_valid():
-			ps = form.save(commit=False)
-			ps.u0 = request.user
-			ps.save()
-			form.save_m2m() # pra salvar o many2many field
-			return redirect('links:index-link', pk=ps.pk)
-	else:
-		form = PsForm()
-	return render(request, 'links/link_edit.html', {'form': form, 'ps_list':ps_list,})
-
-# def proprietario(user,pk):
-# 	return request.user == ps.u0
-
-# @user_passes_test(proprietario, login_url="/login/")
-@login_required
-def ps_delete(request, pk):
+@xframe_options_exempt
+def ps_visibilidade(request, pk, nome):
 	ps = get_object_or_404(Ps, pk=pk)
-	# verifica se o user é o dono do link antes de deletar
+	# verifica se o user é o dono do link antes de executar a acao
 	if request.user == ps.u0:
-		ps.delete()
-	return redirect(request.META.get('HTTP_REFERER'))
+		ps.mudar_visibilidade()
+	return redirect('links:ps-info', pk=pk, nome=nome)
+
+
+
 

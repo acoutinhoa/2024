@@ -34,7 +34,7 @@ class Ps(models.Model):
 		verbose_name='internet archive',
 		help_text='link do <a class="txt" href="https://web.archive.org/">internet archive</a> se o link original estiver indisponível'
 	)
-	tags = models.ManyToManyField(Tg)
+	tags = models.ManyToManyField(Tg, blank=True)
 	obs = models.TextField(blank=True,verbose_name='detail',)
 	
 	def __str__(self):
@@ -42,6 +42,10 @@ class Ps(models.Model):
 
 	class Meta:
 		ordering = ['-u0']
+
+	def mudar_visibilidade(self):
+		self.visivel = not self.visivel
+		self.save()
 
 	def save(self, *args, **kwargs):
 		# link

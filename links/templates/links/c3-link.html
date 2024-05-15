@@ -1,50 +1,78 @@
 {% load my_tags %}
 
-<!-- define link principal -->
-{% if ps.ativo %}
-    {% set ps.link as link %}
-{% elif ps.link2 %}
-    {% set ps.link2 as link %}
-{% endif %}
+{% if not ps %}
+    <div class="info">
+        <h2>este link não existe mais</h2>
+    </div>
+{% else %}
+    <!-- define link principal -->
+    {% if ps.ativo %}
+        {% set ps.link as link %}
+    {% elif ps.link2 %}
+        {% set ps.link2 as link %}
+    {% endif %}
 
-<!-- imagem -->
-<a href="{{ link }}" target="_blank">
-    <img src="{{ ps.imagem.url }}" alt="{{ ps.titulo }}" class="print {% if not ps.visivel %}privado{% endif %}">
-</a>
+    <!-- imagem -->
+    <a href="{{ link }}" target="_blank">
+        <img src="{{ ps.imagem.url }}" alt="{{ ps.titulo }}" class="print {% if not ps.visivel %}privado{% endif %}">
+    </a>
 
-<div class="info">
-    <!-- link:titulo -->
-    <h1>
-        {% if link %}
-            <a class="txt" href="{{ link }}" target="_blank">{{ ps.titulo }}</a>
-        {% else %}
-            {{ ps.titulo }}
-        {% endif %}
-
-        {% if ps.link2 %}
-            <span class="textinho">[internet archive]</span>
-        {% endif %}
-    </h1>
-
-    <!-- link:texto -->
-    <p class="textinho">
-        <b>>>></b> {{ ps.link }}<br>
-    </p>
-
-    <!-- tags -->
-    <h2 class="info-tag">/ 
-        {% for t in ps.tags.all %}
-            <!-- define o link da tag -->
-            {% if nome %}
-                {% url 'links:perfil-tag' tag=t nome=nome as link_tag %}
+    <div class="info">
+        <!-- botoes de edicao -->
+        <div class="edit-ps">
+            {% if owner %}
+                <a href="{% url 'links:ps-delete' pk=ps.pk %}">
+                    <div class="bt1">delete</div>
+                </a>
+                <a href="{% url 'links:ps-edit' pk=ps.pk nome=nome %}">
+                    <div class="bt1">edit</div>
+                </a>
+                <a href="{% url 'links:ps-visibilidade' pk=ps.pk nome=nome %}">
+                    {% if ps.visivel %}
+                        {% set 'hide' as txt %}
+                    {% else %}
+                        {% set 'show' as txt %}
+                    {% endif %}
+                    <div class="bt1">{{ txt }}</div>
+                </a>
             {% else %}
-                {% url 'links:index-tag' tag=t as link_tag %}
+                <a href="">
+                    <div class="bt2">favoritar</div>
+                </a>
             {% endif %}
-            <a class="txt" href="{{ link_tag }}" target="_top">{{ t }}</a> / 
-        {% endfor %}
-    </h2>
+        </div>
+        <!-- link:titulo -->
+        <h1>
+            {% if link %}
+                <a class="txt" href="{{ link }}" target="_blank">{{ ps.titulo }}</a>
+            {% else %}
+                {{ ps.titulo }}
+            {% endif %}
 
-    <!-- texto -->
-    <p style="padding-right: 20%"><br>{{ ps.obs|linebreaksbr }}</p>
-</div>
+            {% if ps.link2 %}
+                <span class="textinho">[internet archive]</span>
+            {% endif %}
+        </h1>
 
+        <!-- link:texto -->
+        <p class="textinho">
+            <b>>>></b> {{ ps.link }}<br>
+        </p>
+
+        <!-- tags -->
+        <h2 class="info-tag">/ 
+            {% for t in ps.tags.all %}
+                <!-- define o link da tag -->
+                {% if nome %}
+                    {% url 'links:perfil-tag' tag=t nome=nome as link_tag %}
+                {% else %}
+                    {% url 'links:index-tag' tag=t as link_tag %}
+                {% endif %}
+                <a class="txt" href="{{ link_tag }}" target="_top">{{ t }}</a> / 
+            {% endfor %}
+        </h2>
+
+        <!-- texto -->
+        <p class="info-txt"><br>{{ ps.obs|linebreaksbr }}</p>
+    </div>
+{% endif %}

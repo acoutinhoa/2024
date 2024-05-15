@@ -1,5 +1,30 @@
 {% load my_tags %}
 
+{% if owner%}
+    <!-- adicionar novo print -->
+    <form class="add" method="POST"  enctype='multipart/form-data'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">adicionar novo print</button>
+    </form>
+{% endif %}
+
+{% for l in ps_list %}
+    {% if perfil %}
+        {% url 'links:ps-info' nome=nome pk=l.pk as link %}
+    {% else %}
+        {% url 'links:ps-info' pk=l.pk as link %}
+    {% endif %}
+    <div style="position:relative;" id='{{ l.pk }}'>
+        <a href="{{ link }}" target='col3'>
+            <img class="lista {% if not l.visivel %}privado{% endif %}" src="{{ l.imagem.url }}" alt="{{ l.titulo }}">
+        </a>
+    </div>
+{% endfor %}
+
+
+
+{% comment %}
 {% for l in ps_list %}
     {% if perfil %}
         {% url 'links:ps-info' nome=nome pk=l.pk as link %}
@@ -22,9 +47,8 @@
             </div>
         {% endif %}
     </div>
-
-    <!-- botoes -->
 {% endfor %}
+{% endcomment %}
 
 
 {% comment %}

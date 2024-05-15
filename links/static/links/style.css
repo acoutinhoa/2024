@@ -109,18 +109,18 @@ form {
     font-size: 14px;
 }
 form p {
-    padding-top: 10px;
+    margin-top: 19px;
 }
 input, textarea {
     width: 100%;
     display: block;
-    margin-top: 9px;
+    margin-top: 5px;
     margin-bottom: 5px;
     border: solid 2px transparent;
-    padding: 8px 10px 5px;
+    padding: 5px 10px 5px;
     background-color: white;
     color: blue;
-    font-size: 14px;
+    font-size: 15px;
 }
 input[type=checkbox] {
     display: inline-block;
@@ -135,16 +135,34 @@ label {
     padding-left: 10px;
 /*    display: block;*/
     margin-top: 13px;
+    font-weight: bold;
 }
 /*input[type=button], input[type=submit], input[type=reset], */
 button {
-  background-color: white;
-  border: solid 2px blue;
-  color: blue;
+  background-color: blue;
+  border: solid 2px white;
+  color: white;
   padding: 5px 10px;
+  text-align: center;
   text-decoration: none;
-  margin: 19px 2px;
+  margin-top: -5px;
   cursor: pointer;
+  width: 100%;
+}
+button:hover {
+    border-color: magenta;
+    background-color: red;
+    color: blue;
+}
+.helptext {
+    font-size: 13px;
+    padding-left: 10px;
+}
+form.add {
+    padding: 19px 0px 38px;
+    background-color: blue;
+    color: white;
+    border: solid 2px blue;
 }
 /*.form_tags {
     display: inline-block;
@@ -249,7 +267,7 @@ button {
 /*lista de imagens*/
 .edit {
     position: absolute; 
-    top:0; 
+    top: 0; 
     left: 0; 
     display: flex; 
     flex-direction: column; 
@@ -257,12 +275,30 @@ button {
 
 
 /*info*/
+.edit-ps {
+    position: absolute; 
+    top:0; 
+    right: 0; 
+    width: 40%;
+    display: flex; 
+    justify-content: flex-end;
+}
 .info {
-    padding: 19px 38px 100px;
+    padding: 31px 38px 100px;
+    position: relative;
+}
+.info-tag {
+    width: 40%;
+    float: right;
+    padding-top: 3px;
+}
+.info-txt {
+    width: 60%;
+    float: right;
+    padding-top: 19px;
 }
 .info h2{
     text-align: right;
-    padding: 20px 0 0px 40%;
 }
 
 
