@@ -10,7 +10,7 @@ def tl(request, tipo):
 	variaveis, created=Variavel.objects.get_or_create(padrao=True)
 
 	# Name.objects.exclude(alias__isnull=True)
-	eventos=Evento.objects.all()
+	eventos=Evento.objects.exclude(visivel=False)
 	por_cidade=eventos.order_by('cidade','inicio')
 	por_tag=eventos.order_by('tag','inicio')
 

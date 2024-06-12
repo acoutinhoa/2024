@@ -5,6 +5,9 @@ class Cor(models.Model):
 	nome = models.CharField(max_length=100)
 	rgb = models.CharField(max_length=15, help_text='>>> separar valores com espaço <br>rgb = 0-255 0-255 0-255 <br>cinza = 0-255 <br>')
 
+	class Meta:
+		verbose_name_plural = "cores"
+
 	def __str__(self):
 		return self.nome
 
@@ -28,6 +31,7 @@ class Local(models.Model):
 
 	class Meta:
 		ordering = ['id']
+		verbose_name_plural = "locais"
 
 def data_padrao(data):
 	'''padroniza str data'''
@@ -45,6 +49,7 @@ def data_padrao(data):
 	return '/'.join(data)
 
 class Evento(models.Model):
+	visivel = models.BooleanField(default=True, help_text='define se este evento é visivel na timeline')
 	tag = models.ForeignKey(Tag, blank=True, null=True, on_delete=models.SET_NULL)
 	cidade = models.ForeignKey(Local, blank=True, null=True, on_delete=models.SET_NULL)
 	info_pt = models.TextField(blank=True, null=True)
@@ -54,7 +59,11 @@ class Evento(models.Model):
 	fim = models.CharField(max_length=10, blank=True, null=True, help_text='aaaa/mm/dd ou aaaa/mm ou aaaa <br>>>> data do fim de um periodo <br>>>> deixar em branco caso seja um evento pontual')
 
 	def __str__(self):
-		return '[%s] %s' % (self.tag, self.info_pt)
+		if not self.visivel:
+			x='---------- '
+		else:
+			x=''
+		return '%s[%s] %s' % (x,self.tag, self.info_pt)
 
 	class Meta:
 		ordering = ['inicio']
@@ -83,6 +92,9 @@ class Variavel(models.Model):
 			if outras_variaveis:
 				outras_variaveis.update(padrao=False)
 		super(Variavel, self).save(*args, **kwargs)
+
+	class Meta:
+		verbose_name_plural = "variaveis"
 
 	def __str__(self):
 		txt='%s-%s_w=%s_h=%s_%s(%s/%s)' % (self.inicio,self.fim,self.largura,self.altura,self.fonte,self.text_size,self.data_size)
