@@ -3,7 +3,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Cor(models.Model):
 	nome = models.CharField(max_length=100)
-	rgb = models.CharField(max_length=15, help_text='>>> separar cores com espaço <br>rgb = 0-255 0-255 0-255 <br>cinza = 0-255 <br>')
+	rgb = models.CharField(max_length=15, help_text='>>> separar valores com espaço <br>rgb = 0-255 0-255 0-255 <br>cinza = 0-255 <br>')
 
 	def __str__(self):
 		return self.nome
@@ -27,7 +27,7 @@ class Local(models.Model):
 		return '%s [%s]' % (self.cidade, self.pais)
 
 	class Meta:
-		ordering = ['pais','id']
+		ordering = ['id']
 
 def data_padrao(data):
 	'''padroniza str data'''
@@ -50,8 +50,8 @@ class Evento(models.Model):
 	info_pt = models.TextField(blank=True, null=True)
 	info_fr = models.TextField(blank=True, null=True)
 	
-	inicio = models.CharField(max_length=10, help_text='definir como aaaa/mm/dd, aaaa/mm ou aaaa <br>>>> data do inicio de um periodo <br>>>> ou data de evento pontual')
-	fim = models.CharField(max_length=10, blank=True, null=True, help_text='definir como aaaa/mm/dd, aaaa/mm ou aaaa <br>>>> data do fim de um periodo <br>>>> deixar em branco caso seja um evento pontual')
+	inicio = models.CharField(max_length=10, help_text='aaaa/mm/dd ou aaaa/mm ou aaaa <br>>>> data do inicio de um periodo <br>>>> ou data de evento pontual')
+	fim = models.CharField(max_length=10, blank=True, null=True, help_text='aaaa/mm/dd ou aaaa/mm ou aaaa <br>>>> data do fim de um periodo <br>>>> deixar em branco caso seja um evento pontual')
 
 	def __str__(self):
 		return '[%s] %s' % (self.tag, self.info_pt)
@@ -67,7 +67,7 @@ class Evento(models.Model):
 		super().save(*args, **kwargs)
 
 
-class Variaveis(models.Model):
+class Variavel(models.Model):
 	inicio = models.IntegerField(default=1918, help_text='ano <br> início da timeline')
 	fim = models.IntegerField(default=2060, help_text='ano <br> fim da timeline')
 	largura = models.IntegerField(default=13, help_text='somente números <br> largura (em px) da coluna de cada ano da timeline ')
@@ -79,10 +79,10 @@ class Variaveis(models.Model):
 
 	def save(self, *args, **kwargs):
 		if self.padrao == True:
-			outras_variaveis = Variaveis.objects.exclude(id=self.id)
+			outras_variaveis = Variavel.objects.exclude(id=self.id)
 			if outras_variaveis:
 				outras_variaveis.update(padrao=False)
-		super(Variaveis, self).save(*args, **kwargs)
+		super(Variavel, self).save(*args, **kwargs)
 
 	def __str__(self):
 		txt='%s-%s_w=%s_h=%s_%s(%s/%s)' % (self.inicio,self.fim,self.largura,self.altura,self.fonte,self.text_size,self.data_size)

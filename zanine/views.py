@@ -7,7 +7,7 @@ def tl(request, tipo):
 	if not tipo:
 		tipo=choice(tipos)
 
-	variaveis, created=Variaveis.objects.get_or_create(padrao=True)
+	variaveis, created=Variavel.objects.get_or_create(padrao=True)
 
 	# Name.objects.exclude(alias__isnull=True)
 	eventos=Evento.objects.all()
