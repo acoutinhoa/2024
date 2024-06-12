@@ -17,15 +17,17 @@ def index(request,nome=None,tag=None,pk=None,edit=False,favs=False,amigos=False,
 		if request.user==perfil:
 			owner=True
 			if request.method == "POST":
-				form = PsAddForm(request.POST, request.FILES)
+				form=PsForm(request.POST, request.FILES)
+				# form = PsAddForm(request.POST, request.FILES)
 				if form.is_valid():
 					ps = form.save(commit=False)
 					ps.u0 = request.user
 					ps.save()
-					# form.save_m2m() # pra salvar o many2many field
+					# form.save_m2m() # pra salvar o many2many field depois do commit false
 					return redirect('links:perfil-edit', pk=ps.pk, nome=nome,)
 			else:
-				form = PsAddForm()
+				# form = PsAddForm()
+				form=PsForm()['imagem'] # seleciona so o a imagem e tira o label > BoundField
 
 	# lista total de links
 	if nome:
@@ -106,7 +108,7 @@ def ps_edit(request, pk, nome):
 				form.save()
 				return redirect('links:ps-info', pk=pk, nome=nome)
 		else:
-			form = PsForm(instance=ps)
+			form = PsForm(instance=ps, label_suffix='')
 	return render(request, 'links/link_edit.html', {'form': form,'ps':ps})
 
 @login_required
@@ -116,7 +118,7 @@ def ps_visibilidade(request, pk, nome):
 	# verifica se o user é o dono do link antes de executar a acao
 	if request.user == ps.u0:
 		ps.mudar_visibilidade()
-	return redirect('links:ps-info', pk=pk, nome=nome)
+	return redirect(request.META.get('HTTP_REFERER'))
 
 
 

@@ -4,8 +4,8 @@
     <!-- adicionar novo print -->
     <form class="add" method="POST"  enctype='multipart/form-data'>
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">adicionar novo print</button>
+        {{ form }}
+        <button type="submit" class="bt1 btf">adicionar novo print</button>
     </form>
 {% endif %}
 

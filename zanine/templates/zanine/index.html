@@ -1,0 +1,262 @@
+{% extends 'zanine/base.html' %}
+
+{% load zanine.my_tags %}
+
+{% block content %}
+<div class="header">
+    <h1 style="float: left; margin-right: 40px;">zanine timeline</h1>
+    {% for t in tipos %}
+    <a href="{% url 'zanine:tl' tipo=t %}"><div class="bt {% if t == tipo %}active{% endif %}">{{ t }}</div></a>
+    {% endfor %}
+</div>
+
+<!-- p5js -->
+<script>
+let tl0={{ variaveis.inicio }};
+let tl1={{ variaveis.fim }};
+let m={{ variaveis.largura }};
+let mh={{ variaveis.altura }};
+let mtop=2*mh;
+let fs={{ variaveis.text_size }};
+let w_cidades=fs*20;
+let x;
+let x2;
+let xt;
+let c;
+let eixoy=[];
+// pagina
+let pw=(tl1-tl0+1)*m+w_cidades;
+let ph=({{ eventos|length }}+{{ lh }}/2)*mh + mtop + 2*mh;
+
+function setup() {
+    createCanvas(pw, ph);
+    angleMode(DEGREES);
+    textFont('{{ variaveis.fonte }}');
+    textSize(fs);
+
+    // botao pra salvar
+    let button = createButton(' save png ');
+    button.class('bt save')
+    button.position(500, 32);
+    button.mousePressed(salvar_png);
+
+    let button2 = createButton(' save jpg ');
+    button2.class('bt save')
+    button2.position(575, 32);
+    button2.mousePressed(salvar_jpg);
+}
+
+function draw() {
+    background(255);
+    noStroke();
+
+    let linha=color(230,230,230);
+    let y=0;
+
+    // tempo
+    for (let i=0; i<(tl1-tl0+1); i++){
+        let x=i*m;
+        let t=tl0+i;
+        push();
+        translate(x+w_cidades,0);
+        stroke(linha);
+        if (((m<30) && (t%5==0)) || (m>=30) || (i==0)) {line(0,0,0,height);}
+        rotate(-90);
+        noStroke();
+        textSize({{ variaveis.data_size }});
+        if (t%5==0) {textStyle(BOLD);}
+        else {textStyle(NORMAL);}
+        text(t, -1.5*mh, 8+m/10);
+        pop();
+    }
+
+    push();
+    translate(w_cidades,0);
+    y+=mtop-mh/2;
+
+    // legenda
+    push()
+    {% for i in legenda %}
+
+        // cidade ou tag
+        {% set False as mudou %}
+        {% if tipo == 'cidades' %}
+            {% ifchanged i.tag %}
+                {% set i.tag as txt %}
+                {% set i.tag.cor.rgb as cor %}
+                {% set True as mudou %}
+            {% endifchanged %}
+        {% elif tipo == 'tags' %}
+            {% ifchanged i.cidade %}
+                {% set i.cidade as txt %}
+                {% set i.cidade.cor.rgb as cor %}
+                {% set True as mudou %}
+            {% endifchanged %}
+        {% endif %}
+
+        // posicao
+        x=posicao( '{{ i.inicio }}' );       
+
+        {% if mudou %}
+            y+=mh/2;
+            push();
+            textStyle(BOLD);
+            textAlign(RIGHT);
+            noStroke();
+            fill(0);
+            text('{{ txt }}',x-fs,y+fs);
+            // text('{{ txt }}',-fs/2,y+fs);
+            // stroke(linha);
+            // line(-w_cidades,y,width,y);
+            pop();
+
+            if ('{{ cor }}') {
+                c = defCor('{{ cor }}');
+                fill(c);
+                noStroke();
+            }
+            else {
+                stroke(0);
+                noFill();
+            }
+            eixoy.push( [y,'{{ txt }}'] );
+        {% endif %}
+
+        {% if i.fim %}
+            x2=posicao( '{{ i.fim }}' );
+            rect(x,y,x2-x,mh/2);
+        {% else %}
+            ellipse(x,y+mh/4,mh/2,mh/2);
+        {% endif %}
+
+    {% endfor %}
+    pop()
+    y+=mh;
+
+
+
+
+    // timeline
+    {% for i in eventos %}
+        // cidade ou tag
+        {% set False as mudou %}
+        {% if tipo == 'cidades' %}
+            {% ifchanged i.cidade %}
+                {% set i.cidade as txt %}
+                {% set True as mudou %}
+            {% endifchanged %}
+        {% elif tipo == 'tags' %}
+            {% ifchanged i.tag %}
+                {% set i.tag as txt %}
+                {% set True as mudou %}
+            {% endifchanged %}
+        {% endif %}
+        {% if mudou %}
+            push();
+            textAlign(RIGHT);
+            textStyle(NORMAL)
+            fill(0);
+            text('{{ txt }}',-fs/2,y+mh/2);
+            stroke(linha);
+            line(-w_cidades,y,width,y);
+            pop();
+            eixoy.push( [y,'{{ txt }}'] );
+        {% endif %}
+
+        push();
+        // cor
+        {% if tipo == 'tags' %}
+            {% set i.cidade.cor.rgb as cor %}
+        {% elif tipo == 'cidades' %}
+            {% set i.tag.cor.rgb as cor %}
+        {% endif %}
+        if ('{{ cor }}') {
+            c = defCor('{{ cor }}');
+            fill(c);
+        }
+        else {
+            stroke(0);
+            noFill();
+        }
+        // posicao
+        x=posicao( '{{ i.inicio }}' );
+        {% if i.fim %}
+            x2=posicao( '{{ i.fim }}' );
+            rect(x,y,x2-x,mh);
+            pop();
+            xt=x2+mh/3;
+        {% else %}
+            ellipse(x,y+mh/2,mh/2,mh/2);
+            pop();
+            xt=x+mh/2;
+        {% endif %}
+        textStyle(BOLD);
+        text('{{ i.info_pt|linebreaksbr|nobreaks }}',xt,y+mh/2-2);
+        textStyle(ITALIC);
+        text('{{ i.info_fr|linebreaksbr|nobreaks }}',xt,y+mh-5);
+        y+=mh;
+    {% endfor %}
+
+    pop();
+
+    // mouse
+    cursor(CROSS); // Draw cursor as cross
+    if (mouseIsPressed == true) {
+        push();
+        let px=Math.trunc( (mouseX-w_cidades)/m )+tl0;
+        let pxw=textWidth(px);
+        let py='';
+        for (let i=0; i<eixoy.length; i++){
+            if (mouseY > eixoy[i][0]) {
+                if ((i === eixoy.length - 1) || (mouseY < eixoy[i+1][0])) {
+                    py=eixoy[i][1];
+                    break;
+                }
+            }
+        }
+        let pyw=textWidth(py);
+        fill(0);
+        rect(mouseX,mouseY-2,pxw+4,-fs);
+        rect(mouseX,mouseY-2,pyw+4,+fs);
+        fill(255);
+        text(px,mouseX+2,mouseY-4); 
+        text(py,mouseX+2,mouseY+fs-4); 
+        pop();
+    }
+
+}
+
+function defCor(cor) {
+    let c;
+    cor=cor.split(' ');
+    if (cor.length == 1){ c=color(cor[0],cor[0],cor[0]); }
+    else if (cor.length == 3){ c=color(cor[0], cor[1], cor[2]); }
+    else if (cor.length == 4){ c=color(cor[0], cor[1], cor[2], cor[3]); }
+    return c;
+}
+
+function posicao(data) {
+    let mm=m/13;
+    let md=mm/31;
+    data=data.split('/');
+    ano=data[0];
+    mes=data[1];
+    dia=data[2];
+    return (ano-tl0)*m + mes*mm + dia*md;
+}
+
+function salvar_png() {
+    saveCanvas('zanine_tl', 'png');
+}
+
+function salvar_jpg() {
+    saveCanvas('zanine_tl_'+'{{ tipo }}', 'jpg');
+}
+
+function setLineDash(list) {
+    drawingContext.setLineDash(list);
+}
+
+</script>
+{% endblock %}    
+

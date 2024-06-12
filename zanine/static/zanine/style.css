@@ -1,0 +1,104 @@
+/* 
+cores
+hsl(hue(degree in color wheel), saturation(%), lightness(%))  
+hsla(0-360, 0-100%, 0-100%, 0-1)  
+*/
+
+/* Always Design for Mobile First */
+/* @media */
+/*
+/* Extra small devices (phones, 600px and down)
+@media only screen and (max-width: 600px) {...}
+
+/* Small devices (portrait tablets and large phones, 600px and up)
+@media only screen and (min-width: 600px) {...}
+
+/* Medium devices (landscape tablets, 768px and up)
+@media only screen and (min-width: 768px) {...}
+
+/* Large devices (laptops/desktops, 992px and up)
+@media only screen and (min-width: 992px) {...}
+
+/* Extra large devices (large laptops and desktops, 1200px and up)
+@media only screen and (min-width: 1200px) {...} 
+*/
+
+/* nunca colocar espaço entre numero e unidade */
+
+
+/*geral*/
+* {
+    padding: 0;
+    margin: 0;
+    border: none;
+    box-sizing: border-box; /* allows us to include the padding and border in the box's total width (and height), making sure that the padding stays inside of the box and that it does not break */
+    font-family: 'Arial';
+}
+body {
+    color: blue;
+    margin: 20px 0 50px;
+}
+
+
+/*depois do float*/
+.clearfix::after { 
+  content: "";
+  clear: both;
+  display: table;
+}
+
+
+/*links*/
+a, a:link {
+    color: red; 
+    text-decoration: none;
+}
+a:hover {
+    border-bottom: solid 0.1em magenta;
+}
+
+.bt, .bt:link {
+    padding: 4px;
+    background: white;
+    color: blue;
+    border: solid 1px blue;
+    width: auto;
+    float: left;
+    margin: 2px 15px 0 0 ;
+}
+.bt:hover, .active {
+    background: blue;
+    color: white;
+}
+
+.save {
+    border-color: red;
+    color: red;
+}
+.save:hover {
+    background: red;
+}
+
+.header {
+    margin: 10px 40px 20px;
+    float: left;
+}
+
+
+/*textos*/
+h1 {font-size: 1.9em;}
+h2 {font-size: 1.3em;}
+p {font-size: 0.9em;}
+
+
+/*lista*/
+ul {list-style-type: none;}
+
+
+/*imagens*/
+img {
+    display: block;
+    width: 100%;
+}
+
+

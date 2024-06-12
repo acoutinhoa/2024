@@ -108,7 +108,7 @@ form {
     color: white;
     font-size: 14px;
 }
-form p {
+form div {
     margin-top: 19px;
 }
 input, textarea {
@@ -116,16 +116,11 @@ input, textarea {
     display: block;
     margin-top: 5px;
     margin-bottom: 5px;
-    border: solid 2px transparent;
+    border: none;
     padding: 5px 10px 5px;
     background-color: white;
     color: blue;
     font-size: 15px;
-}
-input[type=checkbox] {
-    display: inline-block;
-    width: auto;
-    padding-right: 9px;
 }
 input:focus, textarea:focus {
     border-color: magenta;
@@ -133,12 +128,19 @@ input:focus, textarea:focus {
 label {
     width: 100%;
     padding-left: 10px;
-/*    display: block;*/
     margin-top: 13px;
     font-weight: bold;
 }
-/*input[type=button], input[type=submit], input[type=reset], */
+input[type=checkbox] {
+    display: inline-block;
+    width: auto;
+    padding-right: 9px;
+}
 button {
+    margin-top: -5px;
+}
+/*input[type=button], input[type=submit], input[type=reset], */
+/*button {
   background-color: blue;
   border: solid 2px white;
   color: white;
@@ -154,21 +156,30 @@ button:hover {
     background-color: red;
     color: blue;
 }
-.helptext {
+*/
+legend, .helptext {
     font-size: 13px;
     padding-left: 10px;
+    margin-top: 0;
+}
+.form_tags{
+    margin-bottom: 19px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.form_tags div {
+    padding-right: 19px;
+    margin-top: -10px;
 }
 form.add {
-    padding: 19px 0px 38px;
+    padding: 38px 0px 19px;
     background-color: blue;
     color: white;
-    border: solid 2px blue;
+    border: solid 9px blue;
 }
-/*.form_tags {
-    display: inline-block;
-    float: left;
-}
-*/
+
 
 /*botoes*/
 .bt0, .bt1, .bt2 {
@@ -199,6 +210,11 @@ form.add {
     border-color: magenta;
     background-color: red;
     color: blue;
+}
+/*botao form*/
+.btf {
+    width: 100%;
+    cursor: pointer;
 }
 
 

@@ -6,17 +6,25 @@ class TgForm(forms.ModelForm):
         model = Tg
         fields = ('tag', )
 
-PsAddForm = forms.modelform_factory(
-    Ps,
-    fields = ('imagem',),
-    )
-
 PsForm = forms.modelform_factory(
     Ps,
     fields = ('imagem', 'titulo', 'link', 'ativo', 'link2','obs','tags'),
     widgets = {
         'obs': forms.Textarea(attrs={'rows': 5}),
-        # 'tags' : forms.CheckboxSelectMultiple(),
         'tags' : forms.CheckboxSelectMultiple(attrs={'class': 'form_tags'}),
         },
+    # label_suffix = "????",
     )
+
+# class PsForm(forms.ModelForm):
+#     # required_css_class = "required"
+#     class Meta:
+#         model = Ps
+#         fields = ('imagem', 'titulo', 'link', 'ativo', 'link2','obs','tags')
+#         widgets = {
+#             'obs': forms.Textarea(attrs={'rows': 5}),
+#             'tags' : forms.CheckboxSelectMultiple(attrs={'class': 'form_tags'}),
+#             }
+#         labels = {}
+#         help_texts = {}
+#         error_messages = {}

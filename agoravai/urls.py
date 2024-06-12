@@ -15,6 +15,7 @@ urlpatterns = [
     # include app urls
     path('', include('pf.urls')),
     path('', include('links.urls')),
+    path('zanine/', include('zanine.urls')),
 ]
 
 # static urls
