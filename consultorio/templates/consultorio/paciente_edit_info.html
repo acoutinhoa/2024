@@ -3,7 +3,7 @@
 {% endif %}
 
 {% if atualizar_nome %}
-<div id="nome" hx-swap-oob="true">
+<div hx-swap-oob="innerHTML:#nome" >
     {{ paciente.nome }}
 </div>
 {% endif %}
