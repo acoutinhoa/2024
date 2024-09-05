@@ -4,7 +4,8 @@
 
 {% if atualizar_nome %}
 <div id="nome" hx-swap-oob="true">
-    {% include 'consultorio/paciente_nome.html' %} 
+    <!-- {% include 'consultorio/paciente_nome.html' %}  -->
+    {{ paciente. nome }}
 </div>
 {% endif %}
 

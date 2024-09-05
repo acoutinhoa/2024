@@ -46,7 +46,7 @@
 }
 
 #consultorio {
-    padding-top: var(--margem-y);
+    padding: var(--margem-y) 0;
 }
 
 #search {}
@@ -55,6 +55,17 @@
     padding: var(--margem-y) var(--margem-x) 200px;
     overflow-y: scroll;
     overflow-x: hidden;
+}
+
+#nome {
+    width: 100%;
+    height: calc(var(--caixa-h) + 6px);
+    font-weight: bold;
+    color: black;
+    border: solid var(--azul) 4px;
+    padding-top: 8px;
+    padding-left: 15px;
+    cursor: text;
 }
 
 .info {
@@ -179,13 +190,9 @@ input:focus, textarea:focus {
 }
 
 /*nome search */
-form.nome {
-    padding-top: var(--margem-y);
-}
 form.nome input {
     width: 100%;
     height: calc(var(--caixa-h) + 6px);
-    font-weight: bold;
     border: solid var(--azul) 4px;
     padding-top: 4px;
     padding-left: 15px;
