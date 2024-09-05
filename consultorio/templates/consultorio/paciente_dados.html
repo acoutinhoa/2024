@@ -1,0 +1,27 @@
+<!-- menu -->
+<div id="menu_paciente" hx-swap-oob="true">
+    {% include 'consultorio/menu.html' with menu=menu_paciente ativo=ativo_paciente target='#content' swap='innerHTML' %}   
+</div>
+
+
+<!-- historico -->
+<div class="mensagem">
+    <p>paciente cadastrado em {{ paciente.d0|date:"SHORT_DATE_FORMAT" }}</p>
+    <a href="">histórico de edição</a>
+    <div id="database"></div>
+</div>
+
+<!-- dados -->
+<div id="dados" hx-get="{% url 'consultorio:paciente-info' paciente.pk %}" hx-target=this hx-trigger="load" hx-swap="outerHTML" >
+</div>
+
+<!-- contato -->
+<div id="contato" hx-get="{% url 'consultorio:paciente-tel' paciente.pk %}" hx-target=this hx-trigger="load" hx-swap="outerHTML" >
+</div>
+
+<!-- novo contato -->
+<div class="botao" hx-target="#contato" hx-get="{% url 'consultorio:paciente-tel-add' paciente.pk %}"  hx-swap="outerHTML"hx-trigger="click delay:100ms">novo contato</div>
+
+<!-- endereco -->
+<div id="endereco" hx-get="{% url 'consultorio:paciente-end' paciente.pk %}" hx-target=this hx-trigger="load" hx-swap="outerHTML" >
+</div>

@@ -1,0 +1,3 @@
+<div id="database" hx-swap-oob="true">
+    <p hx-get="{% url 'consultorio:htmx-clear' %}" hx-trigger="load delay:4s" class=""> >>> {{ mensagem|safe }} [{% now "SHORT_DATETIME_FORMAT" %}]</p>
+</div>

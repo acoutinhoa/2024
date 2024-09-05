@@ -16,7 +16,7 @@ let tl0={{ variaveis.inicio }};
 let tl1={{ variaveis.fim }};
 let m={{ variaveis.largura }};
 let mh={{ variaveis.altura }};
-let mtop=2*mh;
+let mtop=3*mh;
 let fs={{ variaveis.text_size }};
 let w_cidades=fs*20;
 let x;
@@ -24,9 +24,11 @@ let x2;
 let xt;
 let c;
 let eixoy=[];
+let linear
 // pagina
 let pw=(tl1-tl0+1)*m+w_cidades;
 let ph=({{ eventos|length }}+{{ lh }}/2)*mh + mtop + 2*mh;
+
 
 function setup() {
     createCanvas(pw, ph);
@@ -44,6 +46,157 @@ function setup() {
     button2.class('bt save')
     button2.position(575, 32);
     button2.mousePressed(salvar_jpg);
+
+    
+    let linha=color(230,230,230);
+    let y=0;
+
+    // // legenda tentativa de funcao
+
+    let tp = '{{ tipo }}';
+    let eventos_qs = {{ eventos|queryset_as_json }};
+    let legenda_qs = {{ legenda|queryset_as_json }};
+    let cores_qs = {{ cores|queryset_as_json }};
+    let cidades_qs = {{ cidades|queryset_as_json }};
+    let tags_qs = {{ tags|queryset_as_json }};
+
+    let linear = false;
+
+    let c0;
+    let t0;
+    for (e in eventos_qs) {
+        let evento = eventos_qs[e];
+        let cidade = cidades_qs[evento.fields.cidade-1];
+        let tag = tags_qs[evento.fields.tag-1];
+
+        // texto
+        let mudou=false;
+        let txt;
+        if (tp=='cidades') {
+            if (cidade != c0) {
+                mudou = true;
+                if (cidade) {
+                    txt= `${cidade.fields.cidade} [${cidade.fields.pais}]`;
+                }
+                // console.log( '>>>>>>>>>>> mudou ==>', txt );
+                c0 = cidade;
+            }
+            // console.log('cidades', e, evento.fields.inicio, cidade, );
+        }   else if (tp=='tags') {
+            if (tag != t0) {
+                mudou = true;
+                if (tag) {
+                    txt= tag.fields.nome;
+                }
+                console.log( '>>>>>>>>>>> mudou ==>', txt );
+                t0 = tag;
+            }
+            // console.log('tags', e, evento.fields.inicio, tag, );
+        }
+
+        // posicao
+        x=posicao(evento.fields.inicio);
+
+        if (mudou) {
+            eixoy.push( [y,txt] );
+
+            if (linear) {
+                y+=mh/2;
+            }
+
+            if (txt) {
+                if (linear) {
+                    textStyle(BOLD);
+                    textAlign(RIGHT);
+                    text(txt,x-fs,y+fs);
+                } else {
+                    textAlign(RIGHT);
+                    textStyle(NORMAL);
+                    text(txt,-fs/2,y+mh/2);
+                    // linha
+                    push();
+                    stroke(linha);
+                    line(-w_cidades,y,width,y);
+                    pop();
+                }
+            }
+        }  
+
+        // altura
+        let h;
+        if (linear) {
+            h=mh/2
+        } else {
+            h=mh
+        }
+
+        // cor
+        let cor;
+        if ((tp=='cidades') && (cidade)) {
+            cor = cidade.fields.cor
+        }   else if ((tp=='tags') && (tag)) {
+            cor = tag.fields.cor
+        }
+        console.log(cor);
+
+
+    
+        console.log(tp, e, evento.fields.inicio, x);
+
+
+    }
+
+// function timeline(qs,linear) {
+    
+
+//     // cor e altura
+//     let h;
+//     if (linear) {
+//         h=mh/2
+//     } else {
+//         h=mh
+//         {% if tipo == 'tags' %}
+//             {% set evento.cidade.cor.rgb as cor %}
+//         {% elif tipo == 'cidades' %}
+//             {% set evento.tag.cor.rgb as cor %}
+//         {% endif %}
+//     }
+
+//     push();
+//     if ('{{ cor }}') {
+//         c = defCor('{{ cor }}');
+//         fill(c);
+//         noStroke();
+//     }
+//     else {
+//         stroke(0);
+//         noFill();
+//     }
+
+//     {% if evento.fim %}
+//         x2=posicao( '{{ evento.fim }}' );
+//         rect(x,y,x2-x,h);
+//         xt=x2+h/3;
+//     {% else %}
+//         ellipse(x,y+h/2,h/2,h/2);
+//         xt=x+h/2;
+//     {% endif %}
+//     pop();
+
+//     if (!linear) {
+//         textStyle(BOLD);
+//         text('{{ evento.info_pt|linebreaksbr|nobreaks }}',xt,y+mh/2-2);
+//         textStyle(ITALIC);
+//         text('{{ evento.info_fr|linebreaksbr|nobreaks }}',xt,y+mh-5);
+//         y+=mh;
+//     }
+// }
+
+
+
+
+
+
 }
 
 function draw() {
@@ -52,6 +205,13 @@ function draw() {
 
     let linha=color(230,230,230);
     let y=0;
+
+    // // fundo cinza
+    // push()
+    // fill(linha);
+    // rect(0,0,w_cidades,height);
+    // rect(0,0,width,mtop+({{ lh }}/2)*mh);
+    // pop()
 
     // tempo
     for (let i=0; i<(tl1-tl0+1); i++){
@@ -71,133 +231,144 @@ function draw() {
     }
 
     push();
+    noStroke();
+    fill(0);
+    
     translate(w_cidades,0);
-    y+=mtop-mh/2;
+    y+=mtop-mh;
+
 
     // legenda
-    push()
-    {% for i in legenda %}
+    {% for evento in legenda %}
 
         // cidade ou tag
         {% set False as mudou %}
         {% if tipo == 'cidades' %}
-            {% ifchanged i.tag %}
-                {% set i.tag as txt %}
-                {% set i.tag.cor.rgb as cor %}
+            {% ifchanged evento.tag %}
                 {% set True as mudou %}
+                {% set evento.tag as txt %}
+
+                {% set evento.tag.cor.rgb as cor %}
+
             {% endifchanged %}
         {% elif tipo == 'tags' %}
-            {% ifchanged i.cidade %}
-                {% set i.cidade as txt %}
-                {% set i.cidade.cor.rgb as cor %}
+            {% ifchanged evento.cidade %}
                 {% set True as mudou %}
+                {% set evento.cidade as txt %}
+
+                {% set evento.cidade.cor.rgb as cor %}
+
             {% endifchanged %}
         {% endif %}
 
         // posicao
-        x=posicao( '{{ i.inicio }}' );       
+        x=posicao( '{{ evento.inicio }}' );       
 
         {% if mudou %}
             y+=mh/2;
-            push();
-            textStyle(BOLD);
-            textAlign(RIGHT);
-            noStroke();
-            fill(0);
-            text('{{ txt }}',x-fs,y+fs);
-            // text('{{ txt }}',-fs/2,y+fs);
-            // stroke(linha);
-            // line(-w_cidades,y,width,y);
-            pop();
-
-            if ('{{ cor }}') {
-                c = defCor('{{ cor }}');
-                fill(c);
-                noStroke();
-            }
-            else {
-                stroke(0);
-                noFill();
-            }
-            eixoy.push( [y,'{{ txt }}'] );
-        {% endif %}
-
-        {% if i.fim %}
-            x2=posicao( '{{ i.fim }}' );
-            rect(x,y,x2-x,mh/2);
-        {% else %}
-            ellipse(x,y+mh/4,mh/2,mh/2);
-        {% endif %}
-
-    {% endfor %}
-    pop()
-    y+=mh;
-
-
-
-
-    // timeline
-    {% for i in eventos %}
-        // cidade ou tag
-        {% set False as mudou %}
-        {% if tipo == 'cidades' %}
-            {% ifchanged i.cidade %}
-                {% set i.cidade as txt %}
-                {% set True as mudou %}
-            {% endifchanged %}
-        {% elif tipo == 'tags' %}
-            {% ifchanged i.tag %}
-                {% set i.tag as txt %}
-                {% set True as mudou %}
-            {% endifchanged %}
-        {% endif %}
-        {% if mudou %}
-            push();
-            textAlign(RIGHT);
-            textStyle(NORMAL)
-            fill(0);
-            text('{{ txt }}',-fs/2,y+mh/2);
-            stroke(linha);
-            line(-w_cidades,y,width,y);
-            pop();
+            {% if txt %}
+                textStyle(BOLD);
+                textAlign(RIGHT);
+                text('{{ txt }}',x-fs,y+fs);
+                // text('{{ txt }}',-fs/2,y+fs);
+                // stroke(linha);
+                // line(-w_cidades,y,width,y);
+            {% endif %}
             eixoy.push( [y,'{{ txt }}'] );
         {% endif %}
 
         push();
-        // cor
-        {% if tipo == 'tags' %}
-            {% set i.cidade.cor.rgb as cor %}
-        {% elif tipo == 'cidades' %}
-            {% set i.tag.cor.rgb as cor %}
-        {% endif %}
         if ('{{ cor }}') {
             c = defCor('{{ cor }}');
             fill(c);
+            noStroke();
+        }
+        else {
+            stroke(0);
+            noFill();
+        }
+
+        {% if evento.fim %}
+            x2=posicao( '{{ evento.fim }}' );
+            rect(x,y,x2-x,mh/2);
+        {% else %}
+            ellipse(x,y+mh/4,mh/2,mh/2);
+        {% endif %}
+        pop();
+
+    {% endfor %}
+    y+=mh;
+
+    // timeline
+    {% for evento in eventos %}
+
+        // cidade ou tag
+        {% set False as mudou %}
+        {% if tipo == 'cidades' %}
+            {% ifchanged evento.cidade %}
+                {% set evento.cidade as txt %}
+                {% set True as mudou %}
+            {% endifchanged %}
+        {% elif tipo == 'tags' %}
+            {% ifchanged evento.tag %}
+                {% set evento.tag as txt %}
+                {% set True as mudou %}
+            {% endifchanged %}
+        {% endif %}
+
+        // timeline eixo y
+        {% if mudou %}
+            {% if txt %}
+                textAlign(RIGHT);
+                textStyle(NORMAL)
+                fill(0);
+                text('{{ txt }}',-fs/2,y+mh/2);
+            {% endif %}
+            eixoy.push( [y,'{{ txt }}'] );
+            push();
+            stroke(linha);
+            line(-w_cidades,y,width,y);
+            pop();
+        {% endif %}
+
+        // cor
+        {% if tipo == 'tags' %}
+            {% set evento.cidade.cor.rgb as cor %}
+        {% elif tipo == 'cidades' %}
+            {% set evento.tag.cor.rgb as cor %}
+        {% endif %}
+        push();
+        if ('{{ cor }}') {
+            c = defCor('{{ cor }}');
+            fill(c);
+            noStroke();
         }
         else {
             stroke(0);
             noFill();
         }
         // posicao
-        x=posicao( '{{ i.inicio }}' );
-        {% if i.fim %}
-            x2=posicao( '{{ i.fim }}' );
+        x=posicao( '{{ evento.inicio }}' );
+        {% if evento.fim %}
+            x2=posicao( '{{ evento.fim }}' );
             rect(x,y,x2-x,mh);
-            pop();
             xt=x2+mh/3;
         {% else %}
             ellipse(x,y+mh/2,mh/2,mh/2);
-            pop();
             xt=x+mh/2;
         {% endif %}
+        pop();
+        textAlign(LEFT);
         textStyle(BOLD);
-        text('{{ i.info_pt|linebreaksbr|nobreaks }}',xt,y+mh/2-2);
+        text('{{ evento.info_pt|linebreaksbr|nobreaks }}',xt,y+mh/2-2);
         textStyle(ITALIC);
-        text('{{ i.info_fr|linebreaksbr|nobreaks }}',xt,y+mh-5);
+        text('{{ evento.info_fr|linebreaksbr|nobreaks }}',xt,y+mh-5);
         y+=mh;
     {% endfor %}
 
     pop();
+
+
 
     // mouse
     cursor(CROSS); // Draw cursor as cross
@@ -217,14 +388,18 @@ function draw() {
         let pyw=textWidth(py);
         fill(0);
         rect(mouseX,mouseY-2,pxw+4,-fs);
-        rect(mouseX,mouseY-2,pyw+4,+fs);
         fill(255);
         text(px,mouseX+2,mouseY-4); 
-        text(py,mouseX+2,mouseY+fs-4); 
+        if (py != 'None') {
+            fill(0);
+            rect(mouseX,mouseY-2,pyw+4,+fs);
+            fill(255);
+            text(py,mouseX+2,mouseY+fs-4); 
+        }
         pop();
     }
-
 }
+
 
 function defCor(cor) {
     let c;

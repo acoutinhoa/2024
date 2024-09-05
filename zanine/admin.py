@@ -5,5 +5,5 @@ from .models import *
 admin.site.register(Variavel)
 admin.site.register(Cor)
 admin.site.register(Tag)
-admin.site.register(Local)
+admin.site.register(Cidade)
 admin.site.register(Evento)

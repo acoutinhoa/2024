@@ -1,0 +1,257 @@
+
+/*------------------------------------------------------------*/
+
+/*variaveis*/
+:root {
+  --ciano: rgb(50,200,255);
+  --azul: rgb(0,100,255);
+  --vermelho: rgb(255,100,100);
+  --margem-x: 5vw;
+  --margem-y: 4vh;
+  --caixa-h: 32px;
+}
+
+/*geral*/
+* {
+    padding: 0;
+    margin: 0;
+    border: none;
+    box-sizing: border-box; /* allows us to include the padding and border in the box's total width (and height), making sure that the padding stays inside of the box and that it does not break */
+    text-transform: uppercase;
+    font-family: 'Arial';
+}
+
+/*------------------------------------------------------------*/
+
+/*sessoes*/
+#body {
+    width: 100%;
+    max-width: 1000px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    color: var(--azul);
+}
+
+#menu, #menu_paciente {
+    display: flex;
+    flex-direction: row;
+}
+#menu div {width: 25%;}
+#menu_paciente div{width: 25%;}
+
+#header {
+    padding: 0 var(--margem-x);
+}
+
+#consultorio {
+    padding-top: var(--margem-y);
+}
+
+#search {}
+
+#content {
+    padding: var(--margem-y) var(--margem-x) 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.info {
+    margin-top: var(--margem-y);
+    border: solid 2px var(--azul);
+    padding: 20px 0 20px 20px;
+}
+
+.divisao {
+    margin: 20px 0 10px -20px;
+    border-bottom: dashed 1px var(--azul);
+}
+
+/*------------------------------------------------------------*/
+
+/*textos*/
+#body {font-size: 0.9em;}
+h1 {font-size: 2em;}
+h2 {font-size: 1.2em;}
+h3 {
+    font-size: 1.0em;
+    color: var(--ciano);
+}
+
+h4 {
+    font-size: 1.2em;
+    color: black;
+}
+.mensagem {
+    font-size: 0.8em;
+    color: black;
+    line-height: 1.6em;
+}
+
+/*------------------------------------------------------------*/
+
+/*links*/
+a, a:link, a:visited {
+    color: var(--azul);
+    text-decoration: none;
+    border-bottom: solid 0.1em var(--ciano);
+    transition: 0.2s;
+}
+a:hover {
+    color: var(--ciano);
+}
+
+/*------------------------------------------------------------*/
+
+/*cores*/
+
+.ciano {
+    color: var(--ciano);
+}
+
+
+/*------------------------------------------------------------*/
+
+/*lista*/
+ul {list-style-type: none;}
+/*li {
+    font-size: 0.9em;
+    padding: 0 0 5px 5px;
+}
+*/
+
+/*tabela*/
+table {
+    border: var(--azul) solid 2px;
+    width: 100%;
+    border-collapse: collapse;
+}
+th {
+    text-align: right;
+    width: 5%;
+}
+table.result {
+    border: var(--azul) solid 2px;
+}
+tr.link:hover {
+    background-color: var(--ciano);
+    color: black;
+    cursor: pointer;
+}
+th, td {
+    padding: 4px 4px;
+    vertical-align: top;
+}
+th.ciano {
+    text-align: left;
+    color: var(--ciano);
+    padding: 10px 20px 5px;
+    font-size: 1.5em;
+}
+th.margem {
+    height: 20px}
+td.codigo {
+    max-width: 60px;
+    text-align: right;
+}
+
+/*------------------------------------------------------------*/
+
+/*form*/
+input, textarea, select {
+    width: auto;
+    height: var(--caixa-h);
+    background-color: white;
+    color: black;
+    border: nome;
+    margin: 0;
+    border-bottom: var(--azul) solid 1px;
+    font-size: 1em;
+    padding-top: 10px;
+    padding-left: 9px;
+}
+input:focus, textarea:focus {
+    outline-style: none;
+    box-shadow: none;
+    border: var(--ciano) solid 2px;
+    padding-top: 8px;
+}
+
+/*nome search */
+form.nome {
+    padding-top: var(--margem-y);
+}
+form.nome input {
+    width: 100%;
+    height: calc(var(--caixa-h) + 6px);
+    font-weight: bold;
+    border: solid var(--azul) 4px;
+    padding-top: 4px;
+    padding-left: 15px;
+}
+form.nome input:focus {
+    border-color: var(--ciano);
+}
+
+label {
+    font-weight: bold;
+    width: auto;
+}
+
+button {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+input.botao {
+    border: 0;
+    padding-bottom: 8px;
+}
+.botao, .ativo  {
+    width: 100%;
+    height: var(--caixa-h);
+    background-color: var(--azul);
+    color: white;
+    text-align: center;
+    font-size: 0.8em;
+    padding-top: 9px;
+}
+.botao:hover {
+    cursor: pointer;
+    background-color: var(--ciano);
+    color: black;
+}
+.ativo {
+    background-color: var(--ciano);
+    color: black;
+    font-weight: bold;
+}
+.bordinha{
+    border-right: solid 1px white;
+}
+.danger:hover {
+    cursor: pointer;
+    background-color: var(--vermelho);
+    color: black;
+}
+
+/*------------------------------------------------------------*/
+
+/* For mobile phones: */
+/*@media only screen and (max-width: 768px) {*/
+@media only screen and (max-width: 1000px) {
+}
+
+/*------------------------------------------------------------*/
+
+/*depois do float*/
+.clearfix::after { 
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/*------------------------------------------------------------*/
+
+

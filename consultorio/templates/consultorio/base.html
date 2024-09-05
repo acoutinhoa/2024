@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<!-- head -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,  initial-scale=1.0">
+    <title>consultório odontológico</title>
+    <link rel="stylesheet" href="{% static 'consultorio/style.css' %}">
+    <script src="{% static 'consultorio/htmx.min.js' %}" defer></script>
+</head>
+
+<!-- body -->
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' id="body">
+
+    <div id="menu">
+        {% include 'consultorio/menu.html' %}   
+    </div>
+
+    <div id="header">
+        <div id="consultorio">
+            <a href="{% url 'consultorio:home' %}">
+                <h1>CONSULTÓRIO ODONTOLÓGICO</h1>
+            </a>
+            <p>opcoes de login e logout</p>
+            <p>outras infos fixas</p>
+        </div>
+
+        {% block header %}
+        {% endblock %}        
+    </div>
+
+    <div id="content">
+        {% block content %}
+        {% endblock %}        
+    </div>
+
+</body>
+
+</html>

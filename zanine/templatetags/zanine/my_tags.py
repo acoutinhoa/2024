@@ -2,6 +2,12 @@ from django import template
 
 register = template.Library()
 
+import json
+from django.utils.safestring import mark_safe
+from django.core import serializers
+from django.utils.encoding import is_protected_type
+from django.core.serializers.json import DjangoJSONEncoder
+
 
 @register.simple_tag
 def set(value):
@@ -11,6 +17,15 @@ def set(value):
 def nobreaks(value):
 	'''troca enter por espaco '''
 	return value.replace('<br>', ' ')
+
+@register.filter
+def queryset_as_json(qs):
+    """
+    Sample usage:
+        {{user.list_tipi_movimento|queryset_as_json}}
+    """
+    json_data = serializers.serialize("json", qs)
+    return mark_safe(json_data)
 
 # @register.filter()
 # def linktagsadd(value, arg):

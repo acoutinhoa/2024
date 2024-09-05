@@ -1,0 +1,11 @@
+{% if mensagem %}
+    {% include 'consultorio/paciente_edit_mensagem.html' %}  
+{% endif %}
+
+<div class="info" id="endereco"> 
+    <h3>endereço</h3>
+    <form action="{% url 'consultorio:paciente-end' paciente.pk %}" method="POST" id="end-form" hx-post="{% url 'consultorio:paciente-end' paciente.pk %}" hx-target="#endereco" hx-swap="outerHTML" hx-trigger="change">
+        {% csrf_token %}
+        {{ end_formset.as_div }}
+    </form>   
+</div>

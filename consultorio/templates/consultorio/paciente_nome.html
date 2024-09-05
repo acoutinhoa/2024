@@ -1,0 +1,11 @@
+<form class='nome'>
+    <input
+        type="text"
+        hx-post="{% url 'consultorio:index' %}"
+        hx-target="#body"
+        hx-trigger="click"
+        hx-push-url="true"
+        value="{{ paciente.nome }}"
+        style="cursor: text;"
+    />
+</form>

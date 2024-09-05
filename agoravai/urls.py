@@ -16,6 +16,7 @@ urlpatterns = [
     path('', include('pf.urls')),
     path('', include('links.urls')),
     path('zanine/', include('zanine.urls')),
+    path('consultorio/', include('consultorio.urls')),
 ]
 
 # static urls

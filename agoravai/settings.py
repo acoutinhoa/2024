@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'pf',
     'links',
     'zanine',
+    'consultorio',
 ]
 
 MIDDLEWARE = [

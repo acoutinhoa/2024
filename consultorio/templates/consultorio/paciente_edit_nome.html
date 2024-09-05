@@ -1,0 +1,26 @@
+<form class='nome'>
+    <input
+        type="text"
+        hx-post="{% url 'consultorio:index' %}"
+        hx-target="#body"
+        hx-trigger="click"
+        hx-push-url="true"
+        value="{{ paciente.nome }}"
+        style="cursor: pointer;"
+    />
+</form>
+
+{% comment %}
+{% if mensagem %}
+    {% include 'consultorio/paciente_edit_mensagem.html' %}  
+{% endif %}
+
+<div id="nome"> 
+    <form class="nome" action="{% url 'consultorio:paciente-nome' paciente.pk %}" method="POST" id="nome-form" hx-post="{% url 'consultorio:paciente-nome' paciente.pk %}" hx-target="#nome" hx-swap="outerHTML" hx-trigger="change">
+        {% csrf_token %}
+        {% for field in nome_form %}
+            {{ field }}
+        {% endfor %}
+    </form>   
+</div>
+{% endcomment %}

@@ -1,0 +1,42 @@
+
+<!-- botao para adicionar novo paciente -->
+<div hx-swap-oob="innerHTML:#botao" >
+    {% if busca %}
+        <!-- mostra botao pra adicionar novo paciente -->
+        <input type="submit" class="botao" form="novo-paciente" value="NOVO PACIENTE" />
+    {% endif %}
+</div>
+
+<!-- resultado da busca de pacientes  -->
+{% if busca %}
+    <div class="mensagem">
+        {{ pacientes_lista|length }} paciente{{ pacientes_lista|pluralize }} encontrado{{ pacientes_lista|pluralize }}
+    </div>
+{% else %}
+    <div class="mensagem">
+        {{ total }} paciente{{ total|pluralize }} cadastrado{{ total|pluralize }}
+    </div>
+{% endif %}
+
+<table class="info">
+{% for p in pacientes_lista %}
+    {% ifchanged p.nome.0 %}
+    <tr>
+        <th colspan="2" class="ciano">{{ p.nome.0 }}</th>
+    </tr>
+    {% endifchanged %}
+    
+    <tr class="result link" hx-target="#body" hx-get="{% url 'consultorio:paciente-index' p.pk %}" hx-push-url="true" hx-swap="outerHTML">
+        <td class="codigo">
+            {% if p.codigo %}
+                [ {{ p.codigo }} ]
+            {% endif %}
+        </td>
+        <td class="result">
+            {{ p }}
+        </td>
+    </tr>
+{% endfor %}
+</table>
+ 
+

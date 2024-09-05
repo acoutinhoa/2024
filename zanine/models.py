@@ -1,5 +1,13 @@
 from django.db import models
+from django.db.models import F
 from django.core.validators import MinValueValidator, MaxValueValidator
+
+def imprime_ordem(qs):
+	txt=''
+	for i in qs:
+		txt += '%s - %s <br>' % (i.ordem, i)
+	return txt
+
 
 class Cor(models.Model):
 	nome = models.CharField(max_length=100)
@@ -12,16 +20,32 @@ class Cor(models.Model):
 		return self.nome
 
 class Tag(models.Model):
+	def ordena():
+		return imprime_ordem(Tag.objects.all())
+
 	nome = models.CharField(max_length=100)
 	cor = models.ForeignKey(Cor, blank=True, null=True, on_delete=models.SET_NULL)
+	ordem = models.IntegerField(default=0, help_text=ordena,)
 
 	def __str__(self):
 		return self.nome
 
 	class Meta:
-		ordering = ['id']
+		ordering = ['ordem','id']
 
-class Local(models.Model):
+	def save(self, *args, **kwargs):
+		if not self.ordem:
+			maior= Tag.objects.order_by('-ordem')[0].ordem
+			self.ordem=maior+1
+		# elif self.ordem != self.__ordem_inicial:
+		# 	self.ordem=self.ordem-0.5
+		# 	# outras_variaveis = Variavel.objects.exclude(id=self.id)
+		# 	# if outras_variaveis:
+		# 	# 	outras_variaveis.update(padrao=False)
+		super(Tag, self).save(*args, **kwargs)
+
+
+class Cidade(models.Model):
 	cidade = models.CharField(max_length=100)
 	pais = models.CharField(max_length=2, choices=[('BR','Brasil'),('FR','França'),('CH','Suíça')], default='BR')
 	cor = models.ForeignKey(Cor, blank=True, null=True, on_delete=models.SET_NULL)
@@ -31,7 +55,6 @@ class Local(models.Model):
 
 	class Meta:
 		ordering = ['id']
-		verbose_name_plural = "locais"
 
 def data_padrao(data):
 	'''padroniza str data'''
@@ -51,7 +74,7 @@ def data_padrao(data):
 class Evento(models.Model):
 	visivel = models.BooleanField(default=True, help_text='define se este evento é visivel na timeline')
 	tag = models.ForeignKey(Tag, blank=True, null=True, on_delete=models.SET_NULL)
-	cidade = models.ForeignKey(Local, blank=True, null=True, on_delete=models.SET_NULL)
+	cidade = models.ForeignKey(Cidade, blank=True, null=True, on_delete=models.SET_NULL)
 	info_pt = models.TextField(blank=True, null=True)
 	info_fr = models.TextField(blank=True, null=True)
 	

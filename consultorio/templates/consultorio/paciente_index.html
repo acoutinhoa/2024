@@ -1,0 +1,17 @@
+{% extends 'consultorio/base.html' %}
+
+{% block header %}
+<!-- nome do paciente com link para home -->
+<div id="nome">
+    {% include 'consultorio/paciente_nome.html' %}   
+</div>
+
+<!-- menu paciente -->
+<div id="menu_paciente"></div>
+{% endblock %}
+
+{% block content %}
+<div id="content" hx-get="{% url 'consultorio:paciente-dados' paciente.pk %}" hx-target=this hx-trigger="load" hx-swap="outerHTML" >
+</div>
+{% endblock %}
+

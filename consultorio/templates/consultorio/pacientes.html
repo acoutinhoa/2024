@@ -1,0 +1,16 @@
+{% extends 'consultorio/base.html' %}
+
+{% block header %}
+    <div id='search'>
+        {% include 'consultorio/pacientes_busca.html' %}   
+    </div>
+    <!-- adicionar novo paciente -->
+    <div id="botao"></div>
+{% endblock %}
+
+{% block content %}
+<div class="mensagem">
+    {{ total }} paciente{{ total|pluralize }} cadastrado{{ total|pluralize }}
+</div>
+{% endblock %}
+

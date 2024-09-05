@@ -1,0 +1,20 @@
+{% load my_tags %}
+
+{% for item in menu %}
+	{% set '' as bordinha %}
+	{% set '' as ativar %}
+	
+	{% if not forloop.last %}
+		{% set 'bordinha' as bordinha %}
+	{% endif %}
+	{% if item.0 == ativo %}
+		{% set 'ativo' as ativar %}
+	{% endif %}
+
+	<!-- define um botao diferente pra deletar -->
+	{% if paciente and item.0 == 'deletar' %}
+		<div class="botao danger {{ bordinha }}" style="width: 8%;" hx-target="#body" hx-delete="{{ item.1 }}" hx-push-url="true" hx-swap="outerHTML" hx-confirm="Deletar paciente  {{ paciente.nome|upper }}?">[ X ]</div>
+	{% else %}
+		<div class="botao {{ ativar }} {{ bordinha }}" hx-target="{{ target|default:'#body' }}" hx-get="{{ item.1 }}" hx-push-url="true" hx-swap="{{ swap|default:'outerHTML' }}">{{ item.0 }}</div>
+	{% endif %}
+{% endfor %}

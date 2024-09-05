@@ -1,0 +1,8 @@
+<form method="POST"  enctype='multipart/form-data'>
+    <a href="{{ ps.imagem.url }}" target="_blank">
+        <img src="{{ ps.imagem.url }}" alt="{{ ps.titulo }}" class="lista {% if not ps.visivel %}privado{% endif %}">
+    </a>
+    {% csrf_token %}
+    {{ form.as_div }}
+    <button type="submit" class="bt1 btf">salvar</button>
+</form>

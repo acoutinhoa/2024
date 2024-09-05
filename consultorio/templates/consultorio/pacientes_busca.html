@@ -1,0 +1,14 @@
+<!-- buscar pacientes -->
+<form class='nome' method="POST"  id="novo-paciente" action="{% url 'consultorio:paciente-add' %}" autocomplete="off">
+    {% csrf_token %}
+    <input
+        type="text"
+        name="search" 
+        hx-post="{% url 'consultorio:paciente-search' %}"
+        hx-target="#content"
+        hx-trigger="keyup chaged delay:500ms"
+        placeholder="BUSCAR OU ADICIONAR PACIENTE..." 
+        autofocus 
+    />
+</form>
+

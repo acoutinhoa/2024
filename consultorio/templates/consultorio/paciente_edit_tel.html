@@ -1,0 +1,19 @@
+{% if mensagem %}
+    {% include 'consultorio/paciente_edit_mensagem.html' %}  
+{% endif %}
+
+<div class="info" id="contato"> 
+    <h3>contato</h3>
+    <form action="{% url 'consultorio:paciente-tel' paciente.pk %}" method="POST" id="tel-form" hx-post="{% url 'consultorio:paciente-tel' paciente.pk %}" hx-target="#contato" hx-swap="outerHTML" hx-trigger="change">
+        {% csrf_token %}
+        {{ tel_formset.management_form }}
+        {% for form in tel_formset %}
+            {{ form}}
+            {% if not forloop.last %}
+                <div class="divisao"></div>
+            {% endif %}
+        {% endfor %}
+    </form>   
+</div>
+
+

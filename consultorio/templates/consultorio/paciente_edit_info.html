@@ -1,0 +1,24 @@
+{% if mensagem %}
+    {% include 'consultorio/paciente_edit_mensagem.html' %}  
+{% endif %}
+
+{% if atualizar_nome %}
+<div id="nome" hx-swap-oob="true">
+    {% include 'consultorio/paciente_nome.html' %} 
+</div>
+{% endif %}
+
+<div class="info" id="dados"> 
+    <h3>dados</h3>
+    <form action="{% url 'consultorio:paciente-info' paciente.pk %}" method="POST" id="dados-form" hx-post="{% url 'consultorio:paciente-info' paciente.pk %}" hx-target="#dados" hx-swap="outerHTML" hx-trigger="change">
+        {% csrf_token %}
+        {% for field in dados_form %}
+            {% if forloop.last %}
+                <div class="divisao"></div>
+            {% endif %}
+            <div>
+                {{ field.label_tag }} {{ field }}
+            </div>
+        {% endfor %}
+    </form>   
+</div>
