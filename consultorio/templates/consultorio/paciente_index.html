@@ -3,7 +3,6 @@
 {% block header %}
 <!-- nome do paciente com link para home -->
 <div id="nome" hx-post="{% url 'consultorio:index' %}" hx-target="#body" hx-trigger="click" hx-push-url="true">
-    <!-- {% include 'consultorio/paciente_nome.html' %}    -->
     {{ paciente.nome }}
 </div>
 
